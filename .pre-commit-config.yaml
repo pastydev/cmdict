@@ -1,0 +1,14 @@
+repos:
+-   repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+    - id: black
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.2
+    hooks:
+    - id: flake8
+      additional_dependencies:
+          - 'flake8-docstrings'
+          - 'flake8-import-order'
+          - 'pycodestyle'
+          - 'pydocstyle'
