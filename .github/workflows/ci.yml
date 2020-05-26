@@ -34,5 +34,8 @@ jobs:
     - name: Install dependencies
       run: poetry install
 
+    - name: Check pre-commit
+      run: poetry run pre-commit install && poetry run pre-commit run --all-files
+
     - name: Run pytest
       run: poetry run pytest -n auto --cov=e2c
