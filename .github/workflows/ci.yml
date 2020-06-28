@@ -13,21 +13,19 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.7]
         poetry-version: [1.0.5]
 
     steps:
     - uses: actions/checkout@master
 
     - name: Cache lfs database
-      id: cache-database
       uses: actions/cache@v2
       with:
         path: .git/lfs
         key: .git/lfs
 
     - name: (IF NOT CACHED) Pull lfs database
-      if: steps.cache-database.outputs.cache-hit != 'true'
       run: git lfs pull
 
     - name: Install Python
