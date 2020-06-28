@@ -140,4 +140,5 @@ cython_debug/
 .idea/
 db/stardict.csv
 **/.DS_Store
+.vscode/
 
