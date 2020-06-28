@@ -3,3 +3,5 @@ import-order-style = google
 application-import-names = e2c, tests
 per-file-ignores =
     tests/*: D104
+extend-ignore =
+    D107
