@@ -138,6 +138,6 @@ dmypy.json
 cython_debug/
 
 .idea/
-db/
+db/stardict.csv
 **/.DS_Store
 
