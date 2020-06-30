@@ -1,5 +1,6 @@
 """Database Connector."""
 import os
+import pathlib
 import sqlite3
 
 from loguru import logger
@@ -11,7 +12,15 @@ class DBConnector:
     """Database Connector."""
 
     def __init__(self, path=_path):
-        self._connection = DBConnector._init_connection(path)
+        """Initialize database Connector.
+
+        Args:
+            path (str, optional): Path to the database file. Defaults to _path.
+        """
+        if pathlib.Path(path).is_file() and path.endswith(".db"):
+            self._connection = DBConnector._init_connection(path)
+        else:
+            raise ValueError("Database file is missing or invalid.")
 
     @staticmethod
     def _init_connection(path):
