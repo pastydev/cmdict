@@ -5,9 +5,9 @@ from e2c.db_connector import DBConnector
 
 
 def test_db_connect():
-    """Test database connection."""
-    res = DBConnector().search("play")
-    assert isinstance(res, tuple) and len(res) > 0
+    """Test database connection and single query."""
+    res = DBConnector().query("play")
+    assert isinstance(res, dict) and len(res) > 0
 
 
 def test_no_file_connect():
