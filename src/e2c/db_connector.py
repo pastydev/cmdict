@@ -46,7 +46,7 @@ class DBConnector:
         except sqlite3.Error:
             logger.exception("SQLite DB connection failed.")
 
-    def query(self, word="wrong"):
+    def query(self, word):
         """Search word from the database."""
         try:
             query = "select * from stardict where word = ?"
