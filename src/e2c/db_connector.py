@@ -31,7 +31,7 @@ class DBConnector:
         except sqlite3.Error:
             logger.exception("SQLite DB connection failed.")
 
-    def search(self, word: str = "wrong") -> dict:
+    def query(self, word: str = "wrong") -> dict:
         """Search word from the database."""
         try:
             query = "select * from stardict where word = ?"
@@ -62,7 +62,7 @@ class DBConnector:
 @click.argument("word")
 def search(word):
     """Type in English words and return Chinese translations."""
-    res = DBConnector().search(word)
+    res = DBConnector().query(word)
     click.echo("\n" + res["definition"] + "\n\n" + res["trans"])
 
 
