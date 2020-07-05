@@ -3,6 +3,14 @@ import click
 
 from e2c.db_connector import DBConnector
 
+_divider = "=" * 50
+
+
+@click.group()
+def cli():
+    """Command line interface."""
+    pass
+
 
 @click.command()
 @click.argument("word")
@@ -14,8 +22,8 @@ def search(word):
             "a lot" or "mirror".
     """
     res = DBConnector().query(word)
-    click.echo("\n" + res["definition"] + "\n\n" + res["trans"])
+    click.echo(_divider + "\n" + word)
+    click.echo(res["definition"] + "\n\n" + res["trans"] + "\n" + _divider)
 
 
-if __name__ == "__main__":
-    search()
+cli.add_command(search)
