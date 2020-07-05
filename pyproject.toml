@@ -17,6 +17,7 @@ black = "^19.10b0"
 pytest = "^5.4.2"
 pytest-cov = "^2.9.0"
 pytest-xdist = "^1.32.0"
+darglint = "^1.4.1"
 
 [tool.black]
 line-length = 79
