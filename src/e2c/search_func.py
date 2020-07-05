@@ -10,8 +10,8 @@ def search(word):
     """Type in one English word and echo its Chinese translation.
 
     Args:
-        word (str): one English word to be searched. For example, "a
-        lot" or "mirror".
+        word (str): one English word to be searched. For example,
+            "a lot" or "mirror".
     """
     res = DBConnector().query(word)
     click.echo("\n" + res["definition"] + "\n\n" + res["trans"])

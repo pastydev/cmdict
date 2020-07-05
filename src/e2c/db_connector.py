@@ -32,6 +32,9 @@ class DBConnector:
         Args:
             path (str, optional): Path to the database file.
                 Defaults to ``_path``.
+
+        Raises:
+            ValueError: When the database file is missing or invalid.
         """
         if pathlib.Path(path).is_file() and path.endswith(".db"):
             self._conn = DBConnector._init_conn(path)
@@ -40,14 +43,43 @@ class DBConnector:
 
     @staticmethod
     def _init_conn(path):
-        """Initialize database connection."""
+        """Initialize database connection.
+
+        Args:
+            path (str): Path to the database file..
+
+        Returns:
+            sqlite3.Connection: Connection object to the database.
+        """
         try:
             return sqlite3.connect(path)
         except sqlite3.Error:
             logger.exception("SQLite DB connection failed.")
 
     def query(self, word):
-        """Search word from the database."""
+        """Query word from the database.
+
+        Args:
+            word (str): The query word.
+
+        Returns:
+            dict: Query result with format:
+                {
+                    id: (int)
+                    word: (str)
+                    sw: (str)
+                    phonetic: (str)
+                    definition: (str)
+                    trans: (str)
+                    "pos": (str)
+                    "collins": (int)
+                    "oxford": (int)
+                    "tag": (str)
+                    "bnc": (int)
+                    "frq": (int)
+                    "exchange": (str)
+                }
+        """
         try:
             query = "select * from stardict where word = ?"
             cursor = self._conn.cursor()

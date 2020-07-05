@@ -23,3 +23,8 @@ repos:
           - 'flake8-import-order'
           - 'pycodestyle'
           - 'pydocstyle'
+
+-   repo: https://github.com/terrencepreilly/darglint
+    rev: master
+    hooks:
+    - id: darglint
