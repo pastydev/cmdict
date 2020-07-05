@@ -5,6 +5,10 @@ description = "A command line tool to access English-to-Chinese database"
 authors = ["zequnyu <zequnyu11@gmail.com>"]
 license = "GPL-3.0"
 
+[tool.poetry.scripts]
+e2c = 'e2c:run_script.cli'
+e2cs = 'e2c:run_script.search'
+
 [tool.poetry.dependencies]
 python = "^3.6.1"
 loguru = "^0.5.1"
@@ -38,4 +42,3 @@ exclude = '''
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
-
