@@ -7,10 +7,16 @@ from e2c.run_script import cli, search
 def test_cli():
     """Test cli not crash."""
     res = CliRunner().invoke(cli)
-    assert not res.exception
+    assert res.exit_code == 0
 
 
 def test_cli_search():
-    """Test search function in command line."""
+    """Test cli word search."""
     res = CliRunner().invoke(search, "play")
-    assert not res.exception
+    assert "theatrical performance of a drama" in res.output
+
+
+def test_cli_non_exist_search():
+    """Test cli non-exist word search."""
+    res = CliRunner().invoke(search, "notaword")
+    assert "can not be found" in res.output

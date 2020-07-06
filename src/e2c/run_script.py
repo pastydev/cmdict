@@ -9,7 +9,6 @@ _divider = "=" * 50
 @click.group()
 def cli():
     """Command line interface."""
-    pass
 
 
 @click.command()
@@ -22,8 +21,12 @@ def search(word):
             "a lot" or "mirror".
     """
     res = DBConnector().query(word)
-    click.echo(_divider + "\n" + word)
-    click.echo(res["definition"] + "\n\n" + res["trans"] + "\n" + _divider)
+    click.echo(_divider)
+    if res:
+        click.echo(word + "\n" + res["definition"] + "\n\n" + res["trans"])
+    else:
+        click.echo("'" + word + "' can not be found in the database!")
+    click.echo(_divider)
 
 
 cli.add_command(search)

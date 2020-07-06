@@ -85,6 +85,12 @@ class DBConnector:
             cursor = self._conn.cursor()
             cursor.execute(query, (word,))
             res = cursor.fetchone()
-            return dict([(x, y) for x, y in zip(_key_names, res)])
+
+            return (
+                dict([(x, y) for x, y in zip(_key_names, res)])
+                if res
+                else None
+            )
+
         except sqlite3.Error:
             logger.exception("SQLite DB search failed.")
