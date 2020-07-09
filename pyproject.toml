@@ -13,6 +13,7 @@ e2cs = 'e2c:run_script.search'
 python = "^3.6.1"
 loguru = "^0.5.1"
 click = "^7.1.2"
+colorama = "^0.4.3"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.4.0"
