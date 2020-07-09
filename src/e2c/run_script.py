@@ -8,7 +8,7 @@ from e2c.db_connector import DBConnector
 
 _init_colorama(autoreset=True)
 
-_divider = Fore.WHITE + "-" * 4
+_divider = Fore.WHITE + "-" * 8
 
 
 def _tab_echo(s, tabs=4):
@@ -27,18 +27,29 @@ def cli():
 
 
 @click.command()
-@click.argument("word")
-def search(word):
+@click.argument("words", nargs=-1)
+def search(words):
     """Type in one English word and echo its Chinese translation.
 
     Args:
-        word (str): one English word to be searched. For example,
+        words (str): one English word to be searched. For example,
             "a lot" or "mirror".
     """
-    res = DBConnector().query(word)
-    _tab_echo(_divider)
+    engine = DBConnector()
+    for i, word in enumerate(words):
+        _echo_item(word, engine.query(word))
+
+
+def _echo_item(word, res):
+    """Echo word search result to cli.
+
+    Args:
+        word (str): The word.
+        res (dict): The search result.
+    """
+    click.echo(_divider)
     if res:
-        _tab_echo(Fore.CYAN + Style.BRIGHT + word + "\n")
+        click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
         for k in res:
             if k in ("definition", "trans"):
                 items = res[k].split("\n")
@@ -48,14 +59,13 @@ def search(word):
             elif k in ("phonetic", "collins", "oxford", "bnc", "frq"):
                 _tab_echo(str(k) + ": " + str(res[k]))
     else:
-        _tab_echo(
+        click.echo(
             Fore.RED
             + Style.BRIGHT
             + word
             + Style.RESET_ALL
             + " can not be found in the database!"
         )
-    _tab_echo(_divider)
 
 
 cli.add_command(search)
