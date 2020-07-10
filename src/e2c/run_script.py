@@ -36,24 +36,26 @@ def search(words):
             "a lot" or "mirror".
     """
     engine = DBConnector()
+
+    # Avoid the error during tests caused by `os` module.
+    try:
+        _divider_size = os.get_terminal_size()[0]
+    except Exception:
+        _divider_size = 8
+    _divider = Fore.WHITE + "-" * _divider_size
+
     for i, word in enumerate(words):
-        _echo_item(word, engine.query(word))
+        _echo_item(word, engine.query(word), _divider)
 
 
-def _echo_item(word, res):
+def _echo_item(word, res, _divider):
     """Echo word search result to cli.
 
     Args:
         word (str): The word.
         res (dict): The search result.
+        _divider (str): The horizontal ruler printed at first.
     """
-    # Avoid the error during tests caused by `os` module.
-    try:
-        _divider_size = os.get_terminal_size()[0]
-        _divider = Fore.WHITE + "-" * _divider_size
-    except Exception:
-        _divider = Fore.WHITE + "-" * 8
-
     click.echo(_divider)
     if res:
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
