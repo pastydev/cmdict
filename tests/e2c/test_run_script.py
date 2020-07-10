@@ -13,7 +13,7 @@ def test_cli():
 def test_cli_search():
     """Test cli word search."""
     res = CliRunner().invoke(search, "play")
-    assert "theatrical performance of a drama" in res.output
+    assert "游戏" in res.output
 
 
 def test_cli_non_exist_search():
