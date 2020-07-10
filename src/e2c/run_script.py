@@ -47,8 +47,12 @@ def _echo_item(word, res):
         word (str): The word.
         res (dict): The search result.
     """
-    _divider_size = os.get_terminal_size()[0]
-    _divider = Fore.WHITE + "-" * _divider_size
+    # Avoid the error during tests caused by `os` module.
+    try:
+        _divider_size = os.get_terminal_size()[0]
+        _divider = Fore.WHITE + "-" * _divider_size
+    except Exception:
+        _divider = Fore.WHITE + "-" * 8
 
     click.echo(_divider)
     if res:
