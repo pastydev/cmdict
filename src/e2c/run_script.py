@@ -1,14 +1,17 @@
 """Functions for seaching in command line."""
 import os
+import textwrap
 
 import click
 from colorama import Fore, Style
 from colorama import init as _init_colorama
+from tabulate import tabulate
 
 from e2c.db_connector import DBConnector
 
 
 _init_colorama(autoreset=True)
+_headers = ["collins", "oxford", "bnc", "frq"]
 
 
 def _tab_echo(s, tabs=4):
@@ -59,17 +62,31 @@ def _echo_item(word, res, _terminal_size):
     click.echo(_divider)
     if res:
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
+
+        # Print the table for attributes of the word.
+        msg = tabulate(
+            [[res.get(key) for key in _headers]],
+            headers=_headers,
+            tablefmt="pretty",
+        )
+        msg = msg.split("\n")
+        msg = [4 * " " + m for m in msg]
+        for m in msg:
+            click.echo(m)
+        click.echo("")
+
         for k in res:
             if k in ("definition", "trans"):
                 items = res[k].split("\n")
                 _tab_echo(str(k) + ": ")
                 for item in items:
-                    _tab_echo("- " + item[0 : _terminal_size - 10], tabs=8)
-                    item = item.replace(item[0 : _terminal_size - 10], "")
-                    while len(item) > 0:
-                        _tab_echo(item[0 : _terminal_size - 10], tabs=10)
-                        item = item.replace(item[0 : _terminal_size - 10], "")
-            elif k in ("phonetic", "collins", "oxford", "bnc", "frq"):
+                    item = textwrap.fill(item, _terminal_size - 10)
+                    item = item.split("\n")
+                    _tab_echo("- " + item[0], tabs=8)
+                    if len(item) > 1:
+                        for i in item[1 : len(item)]:
+                            _tab_echo(i, tabs=10)
+            elif k in ("phonetic"):
                 _tab_echo(str(k) + ": " + str(res[k]))
     else:
         click.echo(
