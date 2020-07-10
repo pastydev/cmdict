@@ -1,4 +1,6 @@
 """Functions for seaching in command line."""
+import os
+
 import click
 from colorama import Fore, Style
 from colorama import init as _init_colorama
@@ -7,8 +9,6 @@ from e2c.db_connector import DBConnector
 
 
 _init_colorama(autoreset=True)
-
-_divider = Fore.WHITE + "-" * 8
 
 
 def _tab_echo(s, tabs=4):
@@ -47,6 +47,9 @@ def _echo_item(word, res):
         word (str): The word.
         res (dict): The search result.
     """
+    _divider_size = os.get_terminal_size()[0]
+    _divider = Fore.WHITE + "-" * _divider_size
+
     click.echo(_divider)
     if res:
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
