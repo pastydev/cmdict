@@ -39,23 +39,23 @@ def search(words):
 
     # Avoid the error during tests caused by `os` module.
     try:
-        _divider_size = os.get_terminal_size()[0]
+        _terminal_size = os.get_terminal_size()[0]
     except Exception:
-        _divider_size = 8
-    _divider = Fore.WHITE + "-" * _divider_size
+        _terminal_size = 20
 
     for i, word in enumerate(words):
-        _echo_item(word, engine.query(word), _divider)
+        _echo_item(word, engine.query(word), _terminal_size)
 
 
-def _echo_item(word, res, _divider):
+def _echo_item(word, res, _terminal_size):
     """Echo word search result to cli.
 
     Args:
         word (str): The word.
         res (dict): The search result.
-        _divider (str): The horizontal ruler printed at first.
+        _terminal_size (str): The size of the current terminal.
     """
+    _divider = Fore.WHITE + "-" * _terminal_size
     click.echo(_divider)
     if res:
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
@@ -64,7 +64,11 @@ def _echo_item(word, res, _divider):
                 items = res[k].split("\n")
                 _tab_echo(str(k) + ": ")
                 for item in items:
-                    _tab_echo("- " + item, tabs=8)
+                    _tab_echo("- " + item[0 : _terminal_size - 10], tabs=8)
+                    item = item.replace(item[0 : _terminal_size - 10], "")
+                    while len(item) > 0:
+                        _tab_echo(item[0 : _terminal_size - 10], tabs=10)
+                        item = item.replace(item[0 : _terminal_size - 10], "")
             elif k in ("phonetic", "collins", "oxford", "bnc", "frq"):
                 _tab_echo(str(k) + ": " + str(res[k]))
     else:
