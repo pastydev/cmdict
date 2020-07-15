@@ -2,4 +2,8 @@
 import-order-style = google
 application-import-names = e2c, tests
 per-file-ignores =
-    tests/*: D104
+    # D104 Missing docstring in public package
+    # tests/*: D104,
+    # E203 whitespace before ':'
+ignore =
+    E203
