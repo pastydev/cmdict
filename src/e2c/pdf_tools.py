@@ -127,12 +127,7 @@ def _open_file(path):
         raise ValueError("No such PDF file.")
 
 
-@click.group()
-def cli_pdf_tools():
-    """Command line interface for this file."""
-
-
-@cli_pdf_tools.command()
+@click.command()
 @click.argument("pdf_path", type=click.Path(exists=True))
 @click.argument("color")
 def extract(pdf_path, color):
@@ -175,7 +170,10 @@ def extract(pdf_path, color):
 
     # print the result for now.
     if len(sentences) == 0:
-        raise ValueError("Possibly wrong way to specify the highlight color!")
+        raise ValueError(
+            "Possibly wrong way to specify the highlight color! "
+            "Because nothing is extracted."
+        )
     else:
         click.echo(sentences)
 
@@ -219,7 +217,7 @@ def _check_new_color(new, colors):
     return colors
 
 
-@cli_pdf_tools.command()
+@click.command()
 @click.argument("path", type=click.Path(exists=True))
 def colors(path):
     """List colors of highlights in the PDF file.
@@ -232,7 +230,8 @@ def colors(path):
     for page in doc:
         annot = page.firstAnnot
         while annot:
-            colors = _check_new_color(annot.colors["stroke"], colors)
+            if annot.type[0] == 8:  # The annotation is a highlight.
+                colors = _check_new_color(annot.colors["stroke"], colors)
             annot = annot.next
 
     del colors[0]

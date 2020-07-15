@@ -5,10 +5,17 @@ from e2c.pdf_tools import _recover_broken, colors, extract
 
 
 def test_colors():
-    """If `colors` can detect all highlight colors of a PDF file."""
+    """If `colors` can detect all highlight colors of a PDF file.
+
+    The underline annotation should not be treated as highlight.
+    """
     res = CliRunner().invoke(colors, "./tests/sample-1.pdf")
     assert (
         "[0.9803919792175293, 0.8039219975471497, 0.35294100642204285]"
+        in res.output
+    )
+    assert not (
+        "[0.9254900217056274, 0.1568630039691925, 0.0784313976764679]"
         in res.output
     )
 
