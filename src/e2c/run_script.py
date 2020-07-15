@@ -4,6 +4,7 @@ from colorama import Fore, Style
 from colorama import init as _init_colorama
 
 from e2c.db_connector import DBConnector
+from e2c.pdf_tools import colors, extract
 
 
 _init_colorama(autoreset=True)
@@ -69,3 +70,5 @@ def _echo_item(word, res):
 
 
 cli.add_command(search)
+cli.add_command(colors)
+cli.add_command(extract)
