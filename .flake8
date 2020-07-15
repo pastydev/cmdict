@@ -1,12 +1,3 @@
 [flake8]
 import-order-style = google
 application-import-names = e2c, tests
-per-file-ignores =
-    # D104 Missing docstring in public package
-    tests/__init__.py: D104,
-    tests/e2c/__init__.py: D104,
-ignore =
-    # E203 whitespace before ':'
-    E203,
-    # line break before binary operator
-    W503
