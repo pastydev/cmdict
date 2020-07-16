@@ -8,7 +8,6 @@ import pathlib
 import re
 import string
 
-import click
 import fitz
 import numpy as np
 from textblob import Word
@@ -71,7 +70,7 @@ def _extract_annot(annot, words_on_page):
     quad_count = int(len(quad_points) / 4)
     sentences = ["" for i in range(quad_count)]
     for i in range(quad_count):
-        points = quad_points[i * 4 : i * 4 + 4]
+        points = quad_points[i * 4 : i * 4 + 4]  # noqa: E203
         words = [
             w
             for w in words_on_page
@@ -127,57 +126,6 @@ def _open_file(path):
         raise ValueError("No such PDF file.")
 
 
-@click.command()
-@click.argument("pdf_path", type=click.Path(exists=True))
-@click.argument("color")
-def extract(pdf_path, color):
-    """Extract highlights with the specified color in a PDF file.
-
-    You can use ``e2c colors('path/to/PDF/file')`` first to
-    obtain list of colors in the PDF file.
-
-    Args:
-        pdf_path (str): to the PDF file.
-        color (List[float]): three numbers ranging between 0 and 1.
-
-    Raises:
-        ValueError: when the input `color` is not a list after
-            evaluation.
-        ValueError: when there is no highlight found.
-    """
-    # turn the input string to a Python list.
-    color = eval(color)
-    if not isinstance(color, list):
-        raise ValueError("Incorrect way to specify the highlight color!")
-
-    doc = _open_file(pdf_path)
-    sentences = {}
-    i = 0
-    for page in doc:
-        words_on_page = page.getText("words")  # list of words on page
-        words_on_page.sort(key=lambda w: (w[3], w[0]))  # ascending y, then x
-
-        annot = page.firstAnnot
-        while annot:
-            if annot.type[
-                0
-            ] == 8 and _compare_color(  # The annotation is a highlight.
-                annot.colors["stroke"], color
-            ):
-                sentences[i] = _extract_annot(annot, words_on_page)
-            annot = annot.next  # None returned after last annotation.
-            i += 1
-
-    # print the result for now.
-    if len(sentences) == 0:
-        raise ValueError(
-            "Possibly wrong way to specify the highlight color! "
-            "Because nothing is extracted."
-        )
-    else:
-        click.echo(sentences)
-
-
 def _compare_color(c1, c2):
     """Check if two colors are the same.
 
@@ -215,25 +163,3 @@ def _check_new_color(new, colors):
     if not _found:
         colors[len(colors) + 1] = new
     return colors
-
-
-@click.command()
-@click.argument("path", type=click.Path(exists=True))
-def colors(path):
-    """List colors of highlights in the PDF file.
-
-    Args:
-        path (str): to the PDF file.
-    """
-    doc = _open_file(path)
-    colors = {0: [0, 0, 0]}
-    for page in doc:
-        annot = page.firstAnnot
-        while annot:
-            if annot.type[0] == 8:  # The annotation is a highlight.
-                colors = _check_new_color(annot.colors["stroke"], colors)
-            annot = annot.next
-
-    del colors[0]
-    for color in list(colors.values()):
-        click.echo(color)
