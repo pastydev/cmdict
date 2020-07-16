@@ -32,7 +32,7 @@ def cli():
     """Command line interface."""
 
 
-@click.command()
+@cli.command()
 @click.argument("words", nargs=-1)
 def search(words):
     """Type in one English word and echo its Chinese translation.
@@ -74,7 +74,7 @@ def _echo_item(word, res):
         )
 
 
-@click.command()
+@cli.command()
 @click.argument("pdf_path", type=click.Path(exists=True))
 @click.argument("color")
 def extract(pdf_path, color):
@@ -125,7 +125,7 @@ def extract(pdf_path, color):
         click.echo(sentences)
 
 
-@click.command()
+@cli.command()
 @click.argument("path", type=click.Path(exists=True))
 def colors(path):
     """List colors of highlights in the PDF file.
@@ -145,8 +145,3 @@ def colors(path):
     del colors[0]
     for color in list(colors.values()):
         click.echo(color)
-
-
-cli.add_command(search)
-cli.add_command(colors)
-cli.add_command(extract)
