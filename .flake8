@@ -1,3 +1,5 @@
 [flake8]
 import-order-style = google
 application-import-names = e2c, tests
+per-file-ignores =
+    tests/*: D104
