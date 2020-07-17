@@ -45,7 +45,11 @@ def _check_contain(rect_word, points):
     Returns:
         bool: whether `rect_word` is contained in the rectangular area.
     """
-    # `r` is mutable, so everytime a new `r` should be initiated.
+    # `Rect.intersect()` will change the mutable object of class `Rect`. If
+    # the `Rect` object of some part of a highlight is pass directly to this
+    # function, the object will be changed permanently, but we need to compare
+    # that object with many other words. So list of tuples for positions
+    # should be passed, and everytime a new `Rect` object should be initiated.
     r = fitz.Quad(points).rect
     r.intersect(rect_word)
 
