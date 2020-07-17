@@ -5,7 +5,7 @@ import sqlite3
 
 from loguru import logger
 
-_path = os.path.join(os.getcwd(), "db", "stardict.db")
+_path = os.path.join(str(pathlib.Path(__file__).parent), "data", "stardict.db")
 _key_names = (
     "id",
     "word",
