@@ -101,18 +101,19 @@ def extract(pdf_path, color):
     sentences = {}
     i = 0
     for page in doc:
-        words_on_page = page.getText("words")  # list of words on page
-        words_on_page.sort(key=lambda w: (w[3], w[0]))  # ascending y, then x
+        words_on_page = page.getText("words")
+        words_on_page.sort(key=lambda w: (w[3], w[0]))
 
         annot = page.firstAnnot
         while annot:
-            if annot.type[
-                0
-            ] == 8 and _compare_color(  # The annotation is a highlight.
-                annot.colors["stroke"], color
+            # fmt: off
+            if (
+                annot.type[0] == 8  # The annotation is a highlight.
+                and _compare_color(annot.colors["stroke"], color)
             ):
                 sentences[i] = _extract_annot(annot, words_on_page)
-            annot = annot.next  # None returned after last annotation.
+            # fmt: on
+            annot = annot.next
             i += 1
 
     # print the result for now.

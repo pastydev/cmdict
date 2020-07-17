@@ -31,25 +31,25 @@ def _remove_punctuation(s):
     return s.translate(table)
 
 
-def _check_contain(r_word, points):
-    """If `r_word` is contained in the rectangular area.
+def _check_contain(rect_word, points):
+    """If `rect_word` is contained in the rectangular area.
 
     The area of the intersection should be large enough compared to the
     area of the given word.
 
     Args:
-        r_word (fitz.Rect): rectangular area of a single word.
+        rect_word (fitz.Rect): rectangular area of a single word.
         points (list): list of points in the rectangular area of the
             given part of a highlight.
 
     Returns:
-        bool: whether `r_word` is contained in the rectangular area.
+        bool: whether `rect_word` is contained in the rectangular area.
     """
     # `r` is mutable, so everytime a new `r` should be initiated.
     r = fitz.Quad(points).rect
-    r.intersect(r_word)
+    r.intersect(rect_word)
 
-    if r.getArea() >= r_word.getArea() * _threshold_intersection:
+    if r.getArea() >= rect_word.getArea() * _threshold_intersection:
         contain = True
     else:
         contain = False
@@ -120,7 +120,7 @@ def _open_file(path):
         ValueError: when the path is not directed to a PDF file.
     """
     if pathlib.Path(path).is_file() and path.endswith(".pdf"):
-        doc = fitz.open(path)  # any supported document type
+        doc = fitz.open(path)
         return doc
     else:
         raise ValueError("No such PDF file.")
@@ -139,11 +139,7 @@ def _compare_color(c1, c2):
         bool: true if two colors are the same.
     """
     diff = sum([np.abs(c1[i] - c2[i]) for i in range(3)])
-    if diff > _threshold_color:
-        if_equal = False
-    else:
-        if_equal = True
-    return if_equal
+    return diff <= _threshold_color
 
 
 def _check_new_color(new, colors):
