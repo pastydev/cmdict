@@ -15,8 +15,6 @@ loguru = "^0.5.1"
 click = "^7.1.2"
 colorama = "^0.4.3"
 PyMuPDF = "^1.17.3"
-numpy = "^1.19.0"
-textblob = "^0.15.3"
 
 [tool.poetry.dev-dependencies]
 pre-commit = "^2.4.0"

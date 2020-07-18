@@ -4,18 +4,103 @@
 the given PDF file. Then `e2c extract` can select all words of those
 highlights with the specified color.
 """
-import pathlib
-import re
 import string
 
 import fitz
-import numpy as np
-from textblob import Word
 
-_threshold_color = 0.000001  # if two colors are different.
-_threshold_spell = 0.99  # if the word is spelled correctly.
-_threshold_intersection = 0.9  # if the intersection is large enough.
-_specials = "“" + "”"  # Some special punctuations to be removed.
+# Mac OS Preview supported colors
+PREVIEW_COLORS = {
+    "yellow": [250, 205, 90],
+    "green": [124, 200, 104],
+    "blue": [105, 176, 241],
+    "pink": [251, 92, 137],
+    "purple": [200, 133, 281],
+}
+
+PDF_ANNOT_HIGHLIGHT = 8
+SPECIAL_CHARS = "“”"
+
+
+def extract_words(file_path, color):
+    """Extract highlighted words with specified color in a PDF file.
+
+    Args:
+        file_path (str): target file path.
+        color (str): target color name.
+
+    Returns:
+        list[str]: list of found words.
+    """
+    if color.lower() not in PREVIEW_COLORS:
+        return []
+
+    res = set()
+    for page in fitz.open(file_path):
+        for word_tuple in sorted(
+            page.getText("words"), key=lambda w: (w[1], w[0])
+        ):
+            if word_tuple[4] in res:
+                continue
+
+            for annotation in page.annots():
+                if (
+                    annotation.type[0] == PDF_ANNOT_HIGHLIGHT
+                    and _get_color_name(annotation.colors["stroke"]) == color
+                    and _check_contain(
+                        word_tuple[:4],
+                        annotation.vertices[0] + annotation.vertices[3],
+                    )
+                ):
+                    print(annotation.colors["stroke"])
+                    res.add(_remove_punctuation(word_tuple[4]))
+    return res
+
+
+def _get_color_name(rgb):
+    """Get the color name by rgb values.
+
+    Args:
+        rgb ([float]): Color as RGB scaled by [0...1].
+
+    Returns:
+        (str, None): color name, or None if the color is not
+            currently supported.
+    """
+    origin_rgb = [round(v * 255) for v in rgb]
+
+    for color_name in PREVIEW_COLORS:
+        if origin_rgb == PREVIEW_COLORS[color_name]:
+            return color_name
+
+    return None
+
+
+def _check_contain(rect_a, rect_b, threshold=0.9):
+    """If rect_a and rect_b overlap rate above the threshold.
+
+    Rectangular: (x_top_left, y_top_left, x_bottom_right, y_bottom_right)
+
+    Args:
+        rect_a (tuple): rectangular a
+        rect_b (tuple): rectangular b
+        threshold (float): threshold to control the overlap rate.
+
+    Returns:
+        bool: whether rect_a and rect_b overlap rate above the threshold.
+    """
+    x_a1, y_a1, x_a2, y_a2 = rect_a
+    x_b1, y_b1, x_b2, y_b2 = rect_b
+
+    if x_a1 >= x_b2 or x_b1 >= x_a2:
+        return False
+    elif y_a1 >= y_b2 or y_b1 >= y_a2:
+        return False
+    else:
+        b_area = (y_b2 - y_b1) * (y_a2 - y_a1)
+        overlap_area = (min(y_a2, y_b2) - max(y_a1, y_b1)) * (
+            min(x_a2, x_b2) - max(x_a1, x_b1)
+        )
+        return (overlap_area / b_area) > threshold
 
 
 def _remove_punctuation(s):
@@ -27,139 +112,5 @@ def _remove_punctuation(s):
     Returns:
         str: with all kinds of punctuation removed.
     """
-    table = str.maketrans({a: None for a in string.punctuation + _specials})
+    table = str.maketrans("", "", string.punctuation + SPECIAL_CHARS)
     return s.translate(table)
-
-
-def _check_contain(rect_word, points):
-    """If `rect_word` is contained in the rectangular area.
-
-    The area of the intersection should be large enough compared to the
-    area of the given word.
-
-    Args:
-        rect_word (fitz.Rect): rectangular area of a single word.
-        points (list): list of points in the rectangular area of the
-            given part of a highlight.
-
-    Returns:
-        bool: whether `rect_word` is contained in the rectangular area.
-    """
-    # `Rect.intersect()` will change the mutable object of class `Rect`. If
-    # the `Rect` object of some part of a highlight is pass directly to this
-    # function, the object will be changed permanently, but we need to compare
-    # that object with many other words. So list of tuples for positions
-    # should be passed, and everytime a new `Rect` object should be initiated.
-    r = fitz.Quad(points).rect
-    r.intersect(rect_word)
-
-    if r.getArea() >= rect_word.getArea() * _threshold_intersection:
-        contain = True
-    else:
-        contain = False
-    return contain
-
-
-def _extract_annot(annot, words_on_page):
-    """Extract words in a given highlight.
-
-    Args:
-        annot (fitz.Annot): [description]
-        words_on_page (list): [description]
-
-    Returns:
-        str: words in the entire highlight.
-    """
-    quad_points = annot.vertices
-    quad_count = int(len(quad_points) / 4)
-    sentences = ["" for i in range(quad_count)]
-    for i in range(quad_count):
-        points = quad_points[i * 4 : i * 4 + 4]  # noqa: E203
-        words = [
-            w
-            for w in words_on_page
-            if _check_contain(fitz.Rect(w[:4]), points)
-        ]
-        sentences[i] = " ".join(w[4] for w in words)
-    sentence = " ".join(sentences)
-
-    sentence = _recover_broken(sentence)
-    sentence = _remove_punctuation(sentence)
-    return sentence
-
-
-def _recover_broken(s):
-    """Recover broken words resulted from line wrapping.
-
-    Note that word with necessary hyphens will be detected to be
-    broken as well. So all recovered words will be checked for being
-    meaningful English words.
-
-    Args:
-        s (str): whole long string to be recovered.
-
-    Returns:
-        str: long string with broken words recovered.
-    """
-    brokens = re.findall(r"\w+- \w+", s)
-    recovered = s
-    for m in brokens:
-        new = m.replace("- ", "")
-        w = Word(new)
-        if w.spellcheck()[0][1] >= _threshold_spell:
-            recovered = recovered.replace(m, new)
-    return recovered
-
-
-def _open_file(path):
-    """Try to open the PDF file.
-
-    Args:
-        path (str): to the PDF file.
-
-    Returns:
-        fitz.Document: the target PDF file.
-
-    Raises:
-        ValueError: when the path is not directed to a PDF file.
-    """
-    if pathlib.Path(path).is_file() and path.endswith(".pdf"):
-        doc = fitz.open(path)
-        return doc
-    else:
-        raise ValueError("No such PDF file.")
-
-
-def _compare_color(c1, c2):
-    """Check if two colors are the same.
-
-    Args:
-        c1 (List[float]): three float value betweening 0 and 1 of the
-            first color.
-        c2 (List[float]): three float value betweening 0 and 1 of the
-            second color.
-
-    Returns:
-        bool: true if two colors are the same.
-    """
-    diff = sum([np.abs(c1[i] - c2[i]) for i in range(3)])
-    return diff <= _threshold_color
-
-
-def _check_new_color(new, colors):
-    """Check if the color is not within the list of colors.
-
-    Args:
-        new (List[float]): three float value betweening 0 and 1.
-        colors (List[List[float]]): list of recorded colors.
-
-    Returns:
-        List[List[float]]: new list of recorded colors.
-    """
-    _found = False
-    for c in list(colors.values()):
-        if _compare_color(new, c):
-            _found = True
-    if not _found:
-        colors[len(colors) + 1] = new
-    return colors
