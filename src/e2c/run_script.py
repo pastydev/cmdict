@@ -1,31 +1,70 @@
 """Functions for seaching in command line."""
+import os
+import pathlib
+import zipfile
+
 import click
 from colorama import Fore, Style
 from colorama import init as _init_colorama
+import requests
+from tqdm import tqdm
 
 from e2c.db_connector import DBConnector
 from e2c.pdf_tools import extract_words
 
+DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
+DB_VALID_SIZE = 851288064
 
 _init_colorama(autoreset=True)
-
-_divider = Fore.WHITE + "-" * 8
-_engine = DBConnector()
-
-
-def _tab_echo(s, tabs=4):
-    """Echo via click with tabs at the beginning.
-
-    Args:
-        s (str): The string.
-        tabs (int, optional): Tabs before the string. Defaults to 4.
-    """
-    click.echo(tabs * " " + s)
+_db_dir = os.path.join(str(pathlib.Path(__file__).parent), "data")
+_db_file = os.path.join(_db_dir, "stardict.db")
+_db_path = pathlib.Path(_db_file)
 
 
 @click.group()
 def cli():
     """Command line interface."""
+
+
+@cli.command()
+def download():
+    """Download necessary database before using e2c."""
+    db_zip = os.path.join(_db_dir, "stardict.zip")
+
+    _echo_divider()
+    if _valid_db_exists():
+        _echo_ready()
+    else:
+        try:
+            click.echo("Downloading the dictionary...")
+            r = requests.get(DB_URL, stream=True)
+            total_size = int(r.headers.get("content-length", 0))
+            block_size = 1024
+
+            with tqdm(total=total_size, unit="iB", unit_scale=True) as t, open(
+                db_zip, "wb"
+            ) as f:
+                for data in r.iter_content(block_size):
+                    t.update(len(data))
+                    f.write(data)
+
+            with zipfile.ZipFile(db_zip, "r") as ref:
+                ref.extractall(_db_dir)
+
+            _echo_ready()
+        except Exception:
+            click.echo(
+                "\n"
+                + Fore.RED
+                + Style.BRIGHT
+                + "Something went wrong! Please try again."
+            )
+        finally:
+            zip_path = pathlib.Path(db_zip)
+            if zip_path.is_file():
+                zip_path.unlink()
+            if _db_path.is_file() and _db_path.stat().st_size != DB_VALID_SIZE:
+                _db_path.unlink()
 
 
 @cli.command()
@@ -37,8 +76,12 @@ def search(words):
         words (str): one English word to be searched. For example,
             "a lot" or "mirror".
     """
-    for i, word in enumerate(words):
-        _echo_item(word)
+    if _valid_db_exists():
+        engine = DBConnector()
+        for i, word in enumerate(words):
+            _echo_item(word, engine.query(word))
+    else:
+        _echo_warn_download()
 
 
 @cli.command()
@@ -51,20 +94,33 @@ def extract(pdf_path, color):
         pdf_path (str): path to the PDF file.
         color (str): three numbers ranging between 0 and 1.
     """
-    words = extract_words(pdf_path, color)
-    for i, word in enumerate(words):
-        _echo_item(word)
+    if _valid_db_exists():
+        words = extract_words(pdf_path, color)
+        engine = DBConnector()
+        for i, word in enumerate(words):
+            _echo_item(word, engine.query(word))
+    else:
+        _echo_warn_download()
 
 
-def _echo_item(word):
+def _tab_echo(s, tabs=4):
+    """Echo via click with tabs at the beginning.
+
+    Args:
+        s (str): The string.
+        tabs (int, optional): Tabs before the string. Defaults to 4.
+    """
+    click.echo(tabs * " " + s)
+
+
+def _echo_item(word, res):
     """Echo word search result to cli.
 
     Args:
         word (str): The word.
+        res (dict): The word search result.
     """
-    res = _engine.query(word)
-
-    click.echo(_divider)
+    _echo_divider()
     if res:
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
         for k in res:
@@ -83,3 +139,32 @@ def _echo_item(word):
             + Style.RESET_ALL
             + " can not be found in the database!"
         )
+
+
+def _valid_db_exists():
+    """Return if a valid database is found.
+
+    Returns:
+        bool: if a valid database is found.
+    """
+    return _db_path.is_file() and _db_path.stat().st_size == DB_VALID_SIZE
+
+
+def _echo_divider():
+    """Echo e2c divider."""
+    click.echo(Fore.WHITE + "-" * 8)
+
+
+def _echo_warn_download():
+    """Echo e2c needs download before use."""
+    _echo_divider()
+    click.echo(
+        Fore.RED
+        + Style.BRIGHT
+        + "Database does not exist! Please download: `e2c download`."
+    )
+
+
+def _echo_ready():
+    """Echo e2c is ready to use."""
+    click.echo("\n" + Fore.GREEN + Style.BRIGHT + "e2c is ready to use!")
