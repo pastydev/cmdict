@@ -29,6 +29,11 @@ def cli():
 @cli.command()
 def download():
     """Download necessary database before using e2c."""
+    # check if data folder needs to be created
+    data_dir_path = pathlib.Path(_db_dir)
+    if not data_dir_path.exists():
+        data_dir_path.mkdir(parents=True)
+
     db_zip = os.path.join(_db_dir, "stardict.zip")
 
     _echo_divider()
