@@ -4,11 +4,13 @@ from colorama import Fore, Style
 from colorama import init as _init_colorama
 
 from e2c.db_connector import DBConnector
+from e2c.pdf_tools import extract_words
 
 
 _init_colorama(autoreset=True)
 
 _divider = Fore.WHITE + "-" * 8
+_engine = DBConnector()
 
 
 def _tab_echo(s, tabs=4):
@@ -26,7 +28,7 @@ def cli():
     """Command line interface."""
 
 
-@click.command()
+@cli.command()
 @click.argument("words", nargs=-1)
 def search(words):
     """Type in one English word and echo its Chinese translation.
@@ -35,18 +37,33 @@ def search(words):
         words (str): one English word to be searched. For example,
             "a lot" or "mirror".
     """
-    engine = DBConnector()
     for i, word in enumerate(words):
-        _echo_item(word, engine.query(word))
+        _echo_item(word)
 
 
-def _echo_item(word, res):
+@cli.command()
+@click.argument("pdf_path", type=click.Path(exists=True))
+@click.option("--color", default="yellow", show_default=True)
+def extract(pdf_path, color):
+    """Extract highlighted words with specified color in a PDF file.
+
+    Args:
+        pdf_path (str): path to the PDF file.
+        color (str): three numbers ranging between 0 and 1.
+    """
+    words = extract_words(pdf_path, color)
+    for i, word in enumerate(words):
+        _echo_item(word)
+
+
+def _echo_item(word):
     """Echo word search result to cli.
 
     Args:
         word (str): The word.
-        res (dict): The search result.
     """
+    res = _engine.query(word)
+
     click.echo(_divider)
     if res:
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
@@ -66,6 +83,3 @@ def _echo_item(word, res):
             + Style.RESET_ALL
             + " can not be found in the database!"
         )
-
-
-cli.add_command(search)
