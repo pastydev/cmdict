@@ -9,8 +9,8 @@ from colorama import init as _init_colorama
 import requests
 from tqdm import tqdm
 
-from e2c.db_connector import DBConnector
-from e2c.pdf_tools import extract_words
+from cmdict.db_connector import DBConnector
+from cmdict.pdf_tools import extract_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
 DB_VALID_SIZE = 851288064
@@ -28,7 +28,7 @@ def cli():
 
 @cli.command()
 def download():
-    """Download necessary database before using e2c."""
+    """Download necessary database before using cmdict."""
     # check if data folder needs to be created
     data_dir_path = pathlib.Path(_db_dir)
     if not data_dir_path.exists():
@@ -156,20 +156,20 @@ def _valid_db_exists():
 
 
 def _echo_divider():
-    """Echo e2c divider."""
+    """Echo cmdict divider."""
     click.echo(Fore.WHITE + "-" * 8)
 
 
 def _echo_warn_download():
-    """Echo e2c needs download before use."""
+    """Echo cmdict needs download before use."""
     _echo_divider()
     click.echo(
         Fore.RED
         + Style.BRIGHT
-        + "Database does not exist! Please download: `e2c download`."
+        + "Database does not exist! Please download: `cmdict download`."
     )
 
 
 def _echo_ready():
-    """Echo e2c is ready to use."""
-    click.echo("\n" + Fore.GREEN + Style.BRIGHT + "e2c is ready to use!")
+    """Echo cmdict is ready to use."""
+    click.echo("\n" + Fore.GREEN + Style.BRIGHT + "cmdict is ready to use!")

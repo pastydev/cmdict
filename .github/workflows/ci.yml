@@ -1,4 +1,4 @@
-name: e2c
+name: cmdict
 
 on:
   push:

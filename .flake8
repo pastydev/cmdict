@@ -1,5 +1,5 @@
 [flake8]
 import-order-style = google
-application-import-names = e2c, tests
+application-import-names = cmdict, tests
 per-file-ignores =
     tests/*: D104

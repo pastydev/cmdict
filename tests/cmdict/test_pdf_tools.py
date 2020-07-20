@@ -1,5 +1,9 @@
 """Test functions for extracting highlights in PDF files."""
-from e2c.pdf_tools import _check_contain, _get_color_name, _remove_punctuation
+from cmdict.pdf_tools import (
+    _check_contain,
+    _get_color_name,
+    _remove_punctuation,
+)
 
 
 def test_get_color_name_func():

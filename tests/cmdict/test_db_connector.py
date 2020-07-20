@@ -1,7 +1,7 @@
 """Test DBConnector."""
 import pytest
 
-from e2c.db_connector import DBConnector
+from cmdict.db_connector import DBConnector
 
 
 def test_no_file_connect():
