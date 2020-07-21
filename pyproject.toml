@@ -1,14 +1,14 @@
 [tool.poetry]
-name = "e2c"
+name = "cmdict"
 version = "0.1.0"
-description = "A command line tool to access English-to-Chinese database"
+description = "A command line dictionary toolset"
 authors = ["zequnyu <zequnyu11@gmail.com>"]
 license = "GPL-3.0"
-exclude = ["src/e2c/data/*"]
+exclude = ["src/cmdict/data/*"]
 
 [tool.poetry.scripts]
-e2c = 'e2c:run_script.cli'
-e2cs = 'e2c:run_script.search'
+cmdict = 'cmdict:run_script.cli'
+cmdicts = 'cmdict:run_script.search'
 
 [tool.poetry.dependencies]
 python = "^3.6.1"

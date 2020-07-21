@@ -1,7 +1,7 @@
 """Test functions for seaching in command line."""
 from click.testing import CliRunner
 
-from e2c.run_script import cli, extract, search
+from cmdict.run_script import cli, extract, search
 
 
 def test_cli():

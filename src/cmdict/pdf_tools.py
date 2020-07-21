@@ -1,9 +1,4 @@
-"""Functions to handle highlights in PDF files.
-
-`e2c colors` should be used first to find all colors of highlights in
-the given PDF file. Then `e2c extract` can select all words of those
-highlights with the specified color.
-"""
+"""Functions to handle highlights in PDF files."""
 import string
 
 import fitz
