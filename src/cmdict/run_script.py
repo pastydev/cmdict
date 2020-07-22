@@ -96,11 +96,7 @@ def search(words):
         words (str): one English word to be searched. For example,
             "a lot" or "mirror".
     """
-
-    def get_words():
-        return words
-
-    _query_multiple_words(get_words)
+    _query_multiple_words(lambda: words)
 
 
 @cli.command()
