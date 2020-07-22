@@ -1,4 +1,4 @@
-"""Test functions for extracting highlights in PDF files."""
+"""Test functions for words to be searched in PDF and txt files."""
 from cmdict.pdf_tools import (
     _check_contain,
     _fix_hyphen_broken,
