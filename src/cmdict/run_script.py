@@ -107,11 +107,7 @@ def scan(txt_path):
     Args:
         txt_path (str): path to the txt file.
     """
-
-    def get_words():
-        return scan_words(txt_path)
-
-    _query_multiple_words(get_words)
+    _query_multiple_words(lambda: scan_words(txt_path))
 
 
 @cli.command()
@@ -124,11 +120,7 @@ def extract(pdf_path, color):
         pdf_path (str): path to the PDF file.
         color (str): three numbers ranging between 0 and 1.
     """
-
-    def get_words():
-        return extract_words(pdf_path, color)
-
-    _query_multiple_words(get_words)
+    _query_multiple_words(lambda: extract_words(pdf_path, color))
 
 
 def _tab_echo(s, tabs=4):
