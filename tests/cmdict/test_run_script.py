@@ -57,6 +57,6 @@ def test_cli_extract_from_pdf_with_hyphen_broken_fix():
 def test_cli_scan():
     """Test cli scan words from a txt file."""
     sample_txt = "./tests/sample-3.txt"
-    expected = ["I", "want", "to", "search"]
+    expected = ["typically", "predicate", "exclamation"]
     res = CliRunner().invoke(scan, sample_txt)
     assert res.exit_code == 0 and all(word in res.output for word in expected)
