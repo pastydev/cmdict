@@ -11,6 +11,7 @@ from tqdm import tqdm
 
 from cmdict.db_connector import DBConnector
 from cmdict.pdf_tools import extract_words
+from cmdict.txt_tools import scan_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
 DB_VALID_SIZE = 851288064
@@ -90,6 +91,23 @@ def search(words):
 
 
 @cli.command()
+@click.argument("txt_path", type=click.Path(exists=True))
+def scan(txt_path):
+    """Scan all words in a txt file and return search results.
+
+    Args:
+        txt_path (str): path to the txt file.
+    """
+    if _valid_db_exists():
+        engine = DBConnector()
+        words = scan_words(txt_path)
+        for i, word in enumerate(words):
+            _echo_item(word, engine.query(word))
+    else:
+        _echo_warn_download()
+
+
+@cli.command()
 @click.argument("pdf_path", type=click.Path(exists=True))
 @click.option("--color", default="yellow", show_default=True)
 def extract(pdf_path, color):
@@ -100,8 +118,8 @@ def extract(pdf_path, color):
         color (str): three numbers ranging between 0 and 1.
     """
     if _valid_db_exists():
-        words = extract_words(pdf_path, color)
         engine = DBConnector()
+        words = extract_words(pdf_path, color)
         for i, word in enumerate(words):
             _echo_item(word, engine.query(word))
     else:

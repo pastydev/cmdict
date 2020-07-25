@@ -1,7 +1,7 @@
 """Test functions for seaching in command line."""
 from click.testing import CliRunner
 
-from cmdict.run_script import cli, extract, search
+from cmdict.run_script import cli, extract, scan, search
 
 
 def test_cli():
@@ -51,4 +51,12 @@ def test_cli_extract_from_pdf_with_hyphen_broken_fix():
     sample_pdf = "./tests/sample-1.pdf"
     res = CliRunner().invoke(extract, [sample_pdf, "--color=green"])
     expected = ["producer", "ensure", "optimal", "production"]
+    assert res.exit_code == 0 and all(word in res.output for word in expected)
+
+
+def test_cli_scan():
+    """Test cli scan words from a txt file."""
+    sample_txt = "./tests/sample-3.txt"
+    expected = ["I", "want", "to", "search"]
+    res = CliRunner().invoke(scan, sample_txt)
     assert res.exit_code == 0 and all(word in res.output for word in expected)
