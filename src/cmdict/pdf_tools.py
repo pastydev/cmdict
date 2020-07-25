@@ -9,7 +9,7 @@ PREVIEW_COLORS = {
     "green": [124, 200, 104],
     "blue": [105, 176, 241],
     "pink": [251, 92, 137],
-    "purple": [200, 133, 281],
+    "purple": [200, 133, 218],
 }
 
 PDF_ANNOT_HIGHLIGHT = 8
@@ -30,32 +30,59 @@ def extract_words(file_path, color):
         return []
 
     res = set()
-    for page in fitz.open(file_path):
-        for word_tuple in sorted(
-            page.getText("words"), key=lambda w: (w[1], w[0])
-        ):
-            if word_tuple[4] in res:
-                continue
-
-            for annotation in page.annots():
-                if (
-                    annotation.type[0] == PDF_ANNOT_HIGHLIGHT
-                    and _get_color_name(annotation.colors["stroke"]) == color
-                    and _check_contain(
-                        word_tuple[:4],
-                        annotation.vertices[0] + annotation.vertices[3],
-                    )
+    document = fitz.open(file_path)
+    for annot in _iterate_filtered_annotations(document, color):
+        # annotation may contain several rectangles in different rows
+        rect_counts = len(annot.vertices) // 4
+        for i in range(rect_counts):
+            for word_block in _iterate_all_word_blocks(document):
+                if _check_contain(
+                    (annot.vertices[i * 4] + annot.vertices[i * 4 + 3]),
+                    word_block[:4],
                 ):
-                    print(annotation.colors["stroke"])
-                    res.add(_remove_punctuation(word_tuple[4]))
+                    res.add(_remove_punctuation(word_block[4]))
+
     return res
+
+
+def _iterate_all_word_blocks(document):
+    """Iterate word blocks in order from the document.
+
+    Args:
+        document (fitz.Document): the document.
+
+    Yields:
+        tuple: word block.
+    """
+    for page in document:
+        for wb in sorted(page.getText("words"), key=lambda w: (w[1], w[0])):
+            yield wb
+
+
+def _iterate_filtered_annotations(document, color):
+    """Iterate Annotations that are highlighted by target color.
+
+    Args:
+        document (fitz.Document): the document.
+        color (str): targeted color.
+
+    Yields:
+        fitz.Annot: the annotation.
+    """
+    for page in document:
+        for annotation in page.annots():
+            if (
+                annotation.type[0] == PDF_ANNOT_HIGHLIGHT
+                and _get_color_name(annotation.colors["stroke"]) == color
+            ):
+                yield annotation
 
 
 def _get_color_name(rgb):
     """Get the color name by rgb values.
 
     Args:
-        rgb ([float]): Color as RGB scaled by [0...1].
+        rgb (list[float]): color as RGB scaled by [0...1].
 
     Returns:
         (str, None): color name, or None if the color is not
@@ -70,7 +97,7 @@ def _get_color_name(rgb):
     return None
 
 
-def _check_contain(rect_a, rect_b, threshold=0.9):
+def _check_contain(rect_a, rect_b, threshold=0.75):
     """If rect_a and rect_b overlap rate above the threshold.
 
     Rectangular: (x_top_left, y_top_left, x_bottom_right, y_bottom_right)
@@ -91,7 +118,7 @@ def _check_contain(rect_a, rect_b, threshold=0.9):
     elif y_a1 >= y_b2 or y_b1 >= y_a2:
         return False
     else:
-        b_area = (y_b2 - y_b1) * (y_a2 - y_a1)
+        b_area = (y_b2 - y_b1) * (x_b2 - x_b1)
         overlap_area = (min(y_a2, y_b2) - max(y_a1, y_b1)) * (
             min(x_a2, x_b2) - max(x_a1, x_b1)
         )
