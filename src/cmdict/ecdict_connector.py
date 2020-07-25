@@ -23,8 +23,12 @@ _key_names = (
 )
 
 
-class DBConnector:
-    """Database Connector."""
+class ECDICTConnector:
+    """ECDICT database Connector.
+
+    Database from `https://github.com/skywind3000/ECDICT`.
+
+    """
 
     def __init__(self, path=_path):
         """Initialize database Connector.
@@ -37,7 +41,7 @@ class DBConnector:
             ValueError: When the database file is missing or invalid.
         """
         if pathlib.Path(path).is_file() and path.endswith(".db"):
-            self._conn = DBConnector._init_conn(path)
+            self._conn = ECDICTConnector._init_conn(path)
         else:
             raise ValueError("Database file is missing or invalid.")
 
@@ -94,3 +98,6 @@ class DBConnector:
 
         except sqlite3.Error:
             logger.exception("SQLite DB search failed.")
+
+
+ecdict_engine = ECDICTConnector()

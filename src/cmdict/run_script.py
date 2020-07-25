@@ -9,7 +9,7 @@ from colorama import init as _init_colorama
 import requests
 from tqdm import tqdm
 
-from cmdict.db_connector import DBConnector
+from cmdict.ecdict_connector import ecdict_engine
 from cmdict.pdf_tools import extract_words
 from cmdict.txt_tools import scan_words
 
@@ -83,9 +83,8 @@ def search(words):
             "a lot" or "mirror".
     """
     if _valid_db_exists():
-        engine = DBConnector()
         for i, word in enumerate(words):
-            _echo_item(word, engine.query(word))
+            _echo_item(word, ecdict_engine.query(word))
     else:
         _echo_warn_download()
 
@@ -99,10 +98,9 @@ def scan(txt_path):
         txt_path (str): path to the txt file.
     """
     if _valid_db_exists():
-        engine = DBConnector()
         words = scan_words(txt_path)
         for i, word in enumerate(words):
-            _echo_item(word, engine.query(word))
+            _echo_item(word, ecdict_engine.query(word))
     else:
         _echo_warn_download()
 
@@ -118,10 +116,9 @@ def extract(pdf_path, color):
         color (str): three numbers ranging between 0 and 1.
     """
     if _valid_db_exists():
-        engine = DBConnector()
         words = extract_words(pdf_path, color)
         for i, word in enumerate(words):
-            _echo_item(word, engine.query(word))
+            _echo_item(word, ecdict_engine.query(word))
     else:
         _echo_warn_download()
 
