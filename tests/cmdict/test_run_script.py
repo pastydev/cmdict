@@ -23,15 +23,16 @@ def test_cli_non_exist_search():
 
 
 def test_cli_extract_from_pdf():
-    """Test cli extract words from pdf.
-
-    `grid struc- ture` is extracted initially, and it should be
-    recovered by removing the line-split hyphens.
-    """
+    """Test cli extract words from pdf."""
     sample_pdf = "./tests/sample-1.pdf"
 
     res = CliRunner().invoke(extract, sample_pdf)
     assert res.exit_code == 0 and "district" in res.output
+
+
+def test_cli_extract_from_pdf_with_color_option():
+    """Test cli extract words from pdf with color specified."""
+    sample_pdf = "./tests/sample-1.pdf"
 
     res = CliRunner().invoke(extract, [sample_pdf, "--color=pink"])
     expected = ["combined", "optimal", "realistic"]
@@ -43,3 +44,11 @@ def test_cli_extract_from_pdf():
 
     res = CliRunner().invoke(extract, [sample_pdf, "--color=not_support"])
     assert res.exit_code == 0
+
+
+def test_cli_extract_from_pdf_with_hyphen_broken_fix():
+    """Test cli extract words from pdf with hyphen broken case."""
+    sample_pdf = "./tests/sample-1.pdf"
+    res = CliRunner().invoke(extract, [sample_pdf, "--color=green"])
+    expected = ["producer", "ensure", "optimal", "production"]
+    assert res.exit_code == 0 and all(word in res.output for word in expected)
