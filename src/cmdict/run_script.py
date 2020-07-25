@@ -10,7 +10,8 @@ import requests
 from tqdm import tqdm
 
 from cmdict.db_connector import DBConnector
-from cmdict.file_tools import extract_words, scan_words
+from cmdict.pdf_tools import extract_words
+from cmdict.txt_tools import scan_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
 DB_VALID_SIZE = 851288064
