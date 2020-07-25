@@ -148,10 +148,11 @@ def _echo_item(word, res):
         click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
         for k in res:
             if k in ("definition", "trans"):
-                items = res[k].split("\n")
-                _tab_echo(str(k) + ": ")
-                for item in items:
-                    _tab_echo("- " + item, tabs=8)
+                if res[k]:
+                    items = res[k].split("\n")
+                    _tab_echo(str(k) + ": ")
+                    for item in items:
+                        _tab_echo("- " + item, tabs=8)
             elif k in ("phonetic", "collins", "oxford", "bnc", "frq"):
                 _tab_echo(str(k) + ": " + str(res[k]))
     else:

@@ -16,10 +16,16 @@ def test_cli_search():
     assert "theatrical performance of a drama" in res.output
 
 
-def test_cli_non_exist_search():
+def test_cli_search_non_exist_word():
     """Test cli non-exist word search."""
     res = CliRunner().invoke(search, "notaword")
     assert "can not be found" in res.output
+
+
+def test_cli_search_word_with_none_definition_or_trans():
+    """Test cli non-exist word search."""
+    res = CliRunner().invoke(search, "ducer")
+    assert res.exit_code == 0
 
 
 def test_cli_extract_from_pdf():
