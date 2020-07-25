@@ -72,21 +72,6 @@ def download():
                 _db_path.unlink()
 
 
-def _query_multiple_words(get_words):
-    """Query all words got from a function.
-
-    Args:
-        get_words (Callable): function to generate a list of words.
-    """
-    if _valid_db_exists():
-        engine = DBConnector()
-        words = get_words()
-        for i, word in enumerate(words):
-            _echo_item(word, engine.query(word))
-    else:
-        _echo_warn_download()
-
-
 @cli.command()
 @click.argument("words", nargs=-1)
 def search(words):
@@ -96,7 +81,12 @@ def search(words):
         words (str): one English word to be searched. For example,
             "a lot" or "mirror".
     """
-    _query_multiple_words(lambda: words)
+    if _valid_db_exists():
+        engine = DBConnector()
+        for i, word in enumerate(words):
+            _echo_item(word, engine.query(word))
+    else:
+        _echo_warn_download()
 
 
 @cli.command()
@@ -107,7 +97,13 @@ def scan(txt_path):
     Args:
         txt_path (str): path to the txt file.
     """
-    _query_multiple_words(lambda: scan_words(txt_path))
+    if _valid_db_exists():
+        engine = DBConnector()
+        words = scan_words(txt_path)
+        for i, word in enumerate(words):
+            _echo_item(word, engine.query(word))
+    else:
+        _echo_warn_download()
 
 
 @cli.command()
@@ -120,7 +116,13 @@ def extract(pdf_path, color):
         pdf_path (str): path to the PDF file.
         color (str): three numbers ranging between 0 and 1.
     """
-    _query_multiple_words(lambda: extract_words(pdf_path, color))
+    if _valid_db_exists():
+        engine = DBConnector()
+        words = extract_words(pdf_path, color)
+        for i, word in enumerate(words):
+            _echo_item(word, engine.query(word))
+    else:
+        _echo_warn_download()
 
 
 def _tab_echo(s, tabs=4):
