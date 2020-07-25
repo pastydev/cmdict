@@ -1,9 +1,11 @@
 """Functions to handle highlights in PDF files."""
-import string
-
 import fitz
 
+<<<<<<< HEAD
 from cmdict.db_connector import DBConnector
+=======
+from cmdict.utils import remove_punctuation
+>>>>>>> move 'remove_punctuations' to another file
 
 # Mac OS Preview supported colors
 PREVIEW_COLORS = {
@@ -15,7 +17,6 @@ PREVIEW_COLORS = {
 }
 
 PDF_ANNOT_HIGHLIGHT = 8
-SPECIAL_CHARS = "“”"
 
 
 def extract_words(file_path, color):
@@ -43,10 +44,14 @@ def extract_words(file_path, color):
                     (annot.vertices[i * 4] + annot.vertices[i * 4 + 3]),
                     word_block[:4],
                 ):
+<<<<<<< HEAD
                     word_list.append(word_block[4])
 
         for word in _fix_hyphen_broken(word_list):
             res.add(_remove_punctuation(word))
+=======
+                    res.add(remove_punctuation(word_block[4]))
+>>>>>>> move 'remove_punctuations' to another file
 
     return res
 
