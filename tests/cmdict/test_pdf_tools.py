@@ -1,9 +1,8 @@
-"""Test functions for words to be searched in PDF and txt files."""
-from cmdict.file_tools import (
+"""Test functions for extracting highlights in PDF files."""
+from cmdict.pdf_tools import (
     _check_contain,
     _fix_hyphen_broken,
     _get_color_name,
-    _remove_punctuation,
     extract_words,
 )
 
@@ -46,12 +45,6 @@ def test_check_contain_func():
 
     rect4 = (1, 1, 6, 7)
     assert _check_contain(rect3, rect4, threshold=0.5)
-
-
-def test_remove_punctuation_func():
-    """Test function _remove_punctuation."""
-    assert _remove_punctuation("other.") == "other"
-    assert _remove_punctuation("'quote") == "quote"
 
 
 def test_fix_hyphen_broken_func():

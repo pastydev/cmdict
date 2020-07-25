@@ -1,11 +1,9 @@
 """Functions to handle highlights in PDF files."""
 import fitz
 
-<<<<<<< HEAD
 from cmdict.db_connector import DBConnector
-=======
 from cmdict.utils import remove_punctuation
->>>>>>> move 'remove_punctuations' to another file
+
 
 # Mac OS Preview supported colors
 PREVIEW_COLORS = {
@@ -44,14 +42,10 @@ def extract_words(file_path, color):
                     (annot.vertices[i * 4] + annot.vertices[i * 4 + 3]),
                     word_block[:4],
                 ):
-<<<<<<< HEAD
                     word_list.append(word_block[4])
 
         for word in _fix_hyphen_broken(word_list):
-            res.add(_remove_punctuation(word))
-=======
-                    res.add(remove_punctuation(word_block[4]))
->>>>>>> move 'remove_punctuations' to another file
+            res.add(remove_punctuation(word))
 
     return res
 
@@ -134,19 +128,6 @@ def _check_contain(rect_a, rect_b, threshold=0.75):
             min(x_a2, x_b2) - max(x_a1, x_b1)
         )
         return (overlap_area / b_area) > threshold
-
-
-def _remove_punctuation(s):
-    """Remove all kinds of punctuations in the string.
-
-    Args:
-        s (str): to be removed from punctuations.
-
-    Returns:
-        str: with all kinds of punctuation removed.
-    """
-    table = str.maketrans("", "", string.punctuation + SPECIAL_CHARS)
-    return s.translate(table)
 
 
 def _fix_hyphen_broken(word_list):
