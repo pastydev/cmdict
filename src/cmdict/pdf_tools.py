@@ -3,6 +3,8 @@ import string
 
 import fitz
 
+from cmdict.db_connector import DBConnector
+
 # Mac OS Preview supported colors
 PREVIEW_COLORS = {
     "yellow": [250, 205, 90],
@@ -33,6 +35,7 @@ def extract_words(file_path, color):
     document = fitz.open(file_path)
     for annot in _iterate_filtered_annotations(document, color):
         # annotation may contain several rectangles in different rows
+        word_list = []
         rect_counts = len(annot.vertices) // 4
         for i in range(rect_counts):
             for word_block in _iterate_all_word_blocks(document):
@@ -40,7 +43,10 @@ def extract_words(file_path, color):
                     (annot.vertices[i * 4] + annot.vertices[i * 4 + 3]),
                     word_block[:4],
                 ):
-                    res.add(_remove_punctuation(word_block[4]))
+                    word_list.append(word_block[4])
+
+        for word in _fix_hyphen_broken(word_list):
+            res.add(_remove_punctuation(word))
 
     return res
 
@@ -136,3 +142,36 @@ def _remove_punctuation(s):
     """
     table = str.maketrans("", "", string.punctuation + SPECIAL_CHARS)
     return s.translate(table)
+
+
+def _fix_hyphen_broken(word_list):
+    """Fix sequential broken word due to line change for a word list.
+
+    For example: 'pro-' + 'ducer' should be 'producer'
+
+    Args:
+        word_list (list[str]): a list of words.
+
+    Returns:
+        list[str]: a list of words after fixing hyphen broken cases.
+    """
+    if len(word_list) < 2:
+        return word_list
+
+    res = []
+
+    i = 0
+    while i < len(word_list) - 1:
+        w1, w2 = word_list[i], word_list[i + 1]
+        combined = w1[:-1] + w2
+
+        if w1.endswith("-") and DBConnector().query(combined):
+            res.append(combined)
+            i += 1
+        else:
+            res.append(w1)
+            if i == len(word_list) - 2:
+                res.append(w2)
+        i += 1
+
+    return res

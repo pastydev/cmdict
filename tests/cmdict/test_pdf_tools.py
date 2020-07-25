@@ -1,6 +1,7 @@
 """Test functions for extracting highlights in PDF files."""
 from cmdict.pdf_tools import (
     _check_contain,
+    _fix_hyphen_broken,
     _get_color_name,
     _remove_punctuation,
     extract_words,
@@ -51,3 +52,28 @@ def test_remove_punctuation_func():
     """Test function _remove_punctuation."""
     assert _remove_punctuation("other.") == "other"
     assert _remove_punctuation("'quote") == "quote"
+
+
+def test_fix_hyphen_broken_func():
+    """Test function _fix_hyphen_broken."""
+    res = _fix_hyphen_broken(
+        [
+            "grid",
+            "struc-",
+            "ture",
+            "tree-",
+            "and",
+            "cycle-",
+            "based",
+            "networks",
+        ]
+    )
+    assert res == [
+        "grid",
+        "structure",
+        "tree-",
+        "and",
+        "cycle-",
+        "based",
+        "networks",
+    ]
