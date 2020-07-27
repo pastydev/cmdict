@@ -2,5 +2,10 @@
 
 `cmdict` is a command line dictionary toolset.
 
+## Installation
+```sh
+pip install cmdict
+```
+
 Supported:
  - [ECDICT](https://github.com/skywind3000/ECDICT/releases)
