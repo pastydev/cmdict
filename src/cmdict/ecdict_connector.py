@@ -5,6 +5,8 @@ import sqlite3
 
 from loguru import logger
 
+from cmdict.history import record
+
 _path = os.path.join(str(pathlib.Path(__file__).parent), "data", "stardict.db")
 _key_names = (
     "id",
@@ -64,7 +66,7 @@ class ECDICTConnector:
         """Query word from the database.
 
         Args:
-            word (str): The query word.
+            word (str): the word to be queried.
 
         Returns:
             dict: Query result with format:
@@ -88,6 +90,7 @@ class ECDICTConnector:
             query = "select * from stardict where word = ?"
             cursor = self._conn.cursor()
             cursor.execute(query, (word,))
+            record(word)
             res = cursor.fetchone()
 
             return (
