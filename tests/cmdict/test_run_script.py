@@ -1,7 +1,15 @@
 """Test functions for seaching in command line."""
+import os
+import pathlib
+
 from click.testing import CliRunner
+import yaml
 
 from cmdict.run_script import cli, extract, scan, search
+
+_path_yaml = os.path.join(
+    str(pathlib.Path(__file__).parents[2]), "src/cmdict/data/extraction.yaml"
+)
 
 
 def test_cli():
@@ -58,6 +66,33 @@ def test_cli_extract_from_pdf_with_hyphen_broken_fix():
     res = CliRunner().invoke(extract, [sample_pdf, "--color=green"])
     expected = ["producer", "ensure", "optimal", "production"]
     assert res.exit_code == 0 and all(word in res.output for word in expected)
+
+
+def test_cli_extract_from_pdf_with_save():
+    """Test cli extract words from PDF and save it in a yaml file."""
+
+    def _read_yaml(path):
+        """Read the yaml file and return content in a list.
+
+        Args:
+            path (str): to the yaml file.
+
+        Returns:
+            List[str]: all words in the yaml file.
+        """
+        with open(path, "r") as f:
+            try:
+                hist = yaml.safe_load(f)
+            except yaml.YAMLError as exc:
+                print(exc)
+        return hist
+
+    sample_pdf = "./tests/sample-1.pdf"
+    res = CliRunner().invoke(extract, [sample_pdf, "--color=green", "-s"])
+    expected = ["producer", "ensure", "optimal", "production"]
+    assert res.exit_code == 0 and all(
+        word in _read_yaml(_path_yaml) for word in expected
+    )
 
 
 def test_cli_scan():

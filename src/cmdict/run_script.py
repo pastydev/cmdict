@@ -8,6 +8,7 @@ from colorama import Fore, Style
 from colorama import init as _init_colorama
 import requests
 from tqdm import tqdm
+import yaml
 
 from cmdict.ecdict_connector import ecdict_engine
 from cmdict.pdf_tools import extract_words
@@ -107,16 +108,30 @@ def scan(txt_path):
 
 @cli.command()
 @click.argument("pdf_path", type=click.Path(exists=True))
-@click.option("--color", default="yellow", show_default=True)
-def extract(pdf_path, color):
+@click.option(
+    "--color",
+    default="yellow",
+    help="Which color the highlights are in.",
+    show_default=True,
+)
+@click.option(
+    "--save", "-s", is_flag=True, help="Whether to save extracted words."
+)
+def extract(pdf_path, color, save):
     """Extract highlighted words with specified color in a PDF file.
 
     Args:
         pdf_path (str): path to the PDF file.
         color (str): three numbers ranging between 0 and 1.
+        save (bool): if extracted words will be saved in yaml file.
     """
     if _valid_db_exists():
         words = extract_words(pdf_path, color)
+
+        if save:
+            with open(_db_dir + "/extraction.yaml", "w") as f:
+                yaml.safe_dump(list(words), f)
+
         for i, word in enumerate(words):
             _echo_item(word, ecdict_engine.query(word))
     else:
