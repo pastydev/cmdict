@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cmdict"
-version = "0.1.0"
+version = "0.1.1"
 description = "A command line dictionary toolset"
 authors = ["zequnyu <zequnyu11@gmail.com>", "edxu96 <edxu96@outlook.com>"]
 license = "GPL-3.0"
