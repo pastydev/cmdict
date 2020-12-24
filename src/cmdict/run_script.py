@@ -11,7 +11,7 @@ from tqdm import tqdm
 import yaml
 
 from cmdict.ecdict_connector import ecdict_engine
-from cmdict.pdf_tools import extract_words
+from cmdict.pdf_tools import extract_words, PREVIEW_COLORS
 from cmdict.txt_tools import scan_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
@@ -133,7 +133,9 @@ def extract(pdf_path, color, save):
                 yaml.safe_dump(list(words), f)
 
         for i, word in enumerate(words):
-            _echo_item(word, ecdict_engine.query(word))
+            c = PREVIEW_COLORS[color.lower()]
+            str_color = f"\033[38;2;{c[0]};{c[1]};{c[2]}m"
+            _echo_item(word, ecdict_engine.query(word), str_color)
     else:
         _echo_warn_download()
 
@@ -148,16 +150,21 @@ def _tab_echo(s, tabs=4):
     click.echo(tabs * " " + s)
 
 
-def _echo_item(word, res):
+def _echo_item(word, res, str_color=None):
     """Echo word search result to cli.
 
     Args:
         word (str): The word.
         res (dict): The word search result.
+        str_color (str): Representing the color.
     """
     _echo_divider()
     if res:
-        click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
+        if str_color:
+            click.echo(str_color + word + "\x1b[0m" + "\n")
+        else:
+            click.echo(Fore.CYAN + Style.BRIGHT + word + "\n")
+
         for k in res:
             if k in ("definition", "trans"):
                 if res[k]:
