@@ -467,7 +467,7 @@ six = "*"
 testing = ["filelock"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "YAML parser and emitter for Python"
 name = "pyyaml"
 optional = false
@@ -608,7 +608,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "04b4c71a738265681b758fee789f4d4f05c9fd4713416f1299608c3909b4a627"
+content-hash = "84bc6560d52feb87e17aba10ec00321de013b73f38fb766c9051a81efb401b3b"
 python-versions = "^3.6.1"
 
 [metadata.files]
