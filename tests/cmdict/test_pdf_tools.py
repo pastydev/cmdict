@@ -52,8 +52,8 @@ def test_fix_hyphen_broken_func():
     res = _fix_hyphen_broken(
         [
             "grid",
-            "struc-",
-            "ture",
+            "feasi-",
+            "bility",
             "tree-",
             "and",
             "cycle-",
@@ -63,7 +63,7 @@ def test_fix_hyphen_broken_func():
     )
     assert res == [
         "grid",
-        "structure",
+        "feasibility",
         "tree-",
         "and",
         "cycle-",

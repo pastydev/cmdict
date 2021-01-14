@@ -14,19 +14,10 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-        poetry-version: [1.0.5]
+        poetry-version: [1.1.4]
 
     steps:
     - uses: actions/checkout@master
-
-    - name: Cache lfs database
-      uses: actions/cache@v2
-      with:
-        path: .git/lfs
-        key: .git/lfs
-
-    - name: (IF NOT CACHED) Pull lfs database
-      run: git lfs pull
 
     - name: Install Python
       uses: actions/setup-python@v2
@@ -34,7 +25,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install poetry
-      uses: dschep/install-poetry-action@v1.3
+      uses: snok/install-poetry@v1.1.1
       with:
         version: ${{ matrix.poetry-version }}
 
