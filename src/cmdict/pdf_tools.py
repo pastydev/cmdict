@@ -1,7 +1,7 @@
 """Functions to handle highlights in PDF files."""
 import fitz
 
-from cmdict.ecdict_connector import ecdict_engine
+from cmdict.ecdict_connector import ECDICTConnector
 from cmdict.utils import remove_punctuation
 
 
@@ -145,13 +145,14 @@ def _fix_hyphen_broken(word_list):
         return word_list
 
     res = []
+    db_engine = ECDICTConnector()
 
     i = 0
     while i < len(word_list) - 1:
         w1, w2 = word_list[i], word_list[i + 1]
         combined = w1[:-1] + w2
 
-        if w1.endswith("-") and ecdict_engine.query(combined):
+        if w1.endswith("-") and db_engine.query(combined):
             res.append(combined)
             i += 1
         else:

@@ -1,7 +1,7 @@
 """Test ECDICTConnector."""
 import pytest
 
-from cmdict.ecdict_connector import ecdict_engine, ECDICTConnector
+from cmdict.ecdict_connector import ECDICTConnector
 
 
 def test_no_file_connect():
@@ -20,12 +20,3 @@ def test_non_exist_word_search():
     """Test non-exist word query."""
     res = ECDICTConnector().query("notaword")
     assert res is None
-
-
-def test_ecdict_singleton():
-    """Test ecdict_engine singleton."""
-    res = ecdict_engine.query("play")
-    assert isinstance(res, dict) and len(res) > 0
-
-    res = ecdict_engine.query("apple")
-    assert isinstance(res, dict) and len(res) > 0
