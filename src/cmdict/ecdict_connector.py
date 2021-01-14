@@ -101,6 +101,3 @@ class ECDICTConnector:
 
         except sqlite3.Error:
             logger.exception("SQLite DB search failed.")
-
-
-ecdict_engine = ECDICTConnector()

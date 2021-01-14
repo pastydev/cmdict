@@ -10,7 +10,7 @@ import requests
 from tqdm import tqdm
 import yaml
 
-from cmdict.ecdict_connector import ecdict_engine
+from cmdict.ecdict_connector import ECDICTConnector
 from cmdict.pdf_tools import extract_words
 from cmdict.txt_tools import scan_words
 
@@ -18,6 +18,7 @@ DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-
 DB_VALID_SIZE = (851288064, 17408)  # (full size, test size)
 
 _init_colorama(autoreset=True)
+
 _db_dir = os.path.join(str(pathlib.Path(__file__).parent), "data")
 _db_file = os.path.join(_db_dir, "stardict.db")
 _db_path = pathlib.Path(_db_file)
@@ -87,8 +88,9 @@ def search(words):
             "a lot" or "mirror".
     """
     if _valid_db_exists():
+        db_engine = ECDICTConnector()
         for i, word in enumerate(words):
-            _echo_item(word, ecdict_engine.query(word))
+            _echo_item(word, db_engine.query(word))
     else:
         _echo_warn_download()
 
@@ -102,9 +104,10 @@ def scan(txt_path):
         txt_path (str): path to the txt file.
     """
     if _valid_db_exists():
+        db_engine = ECDICTConnector()
         words = scan_words(txt_path)
         for i, word in enumerate(words):
-            _echo_item(word, ecdict_engine.query(word))
+            _echo_item(word, db_engine.query(word))
     else:
         _echo_warn_download()
 
@@ -129,6 +132,7 @@ def extract(pdf_path, color, save):
         save (bool): if extracted words will be saved in yaml file.
     """
     if _valid_db_exists():
+        db_engine = ECDICTConnector()
         words = extract_words(pdf_path, color)
 
         if save:
@@ -136,7 +140,7 @@ def extract(pdf_path, color, save):
                 yaml.safe_dump(list(words), f)
 
         for i, word in enumerate(words):
-            _echo_item(word, ecdict_engine.query(word))
+            _echo_item(word, db_engine.query(word))
     else:
         _echo_warn_download()
 
@@ -186,7 +190,6 @@ def _valid_db_exists():
     Returns:
         bool: if a valid database is found.
     """
-    print(_db_path.stat().st_size)
     return _db_path.is_file() and _db_path.stat().st_size in DB_VALID_SIZE
 
 
