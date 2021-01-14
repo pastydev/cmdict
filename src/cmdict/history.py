@@ -6,7 +6,7 @@ from loguru import logger
 import yaml
 
 _path = os.path.join(
-    str(pathlib.Path(__file__).parent), "data", "history.yaml"
+    str(pathlib.Path(__file__).parent), "data", ".history.yaml"
 )
 
 

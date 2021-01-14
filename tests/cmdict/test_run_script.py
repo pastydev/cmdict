@@ -8,7 +8,7 @@ import yaml
 from cmdict.run_script import cli, extract, scan, search
 
 _path_yaml = os.path.join(
-    str(pathlib.Path(__file__).parents[2]), "src/cmdict/data/extraction.yaml"
+    str(pathlib.Path(__file__).parents[2]), "src/cmdict/data/.extraction.yaml"
 )
 
 

@@ -1,3 +1,7 @@
+# YAML file initiated during development
+src/cmdict/data/.extraction.yaml
+src/cmdict/data/.history.yaml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

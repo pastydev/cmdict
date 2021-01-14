@@ -24,7 +24,9 @@ def path2yaml(tmp_path_factory):
     Returns:
         str: initated path.
     """
-    return str(tmp_path_factory.mktemp("tmp", numbered=False) / "history.yaml")
+    return str(
+        tmp_path_factory.mktemp("tmp", numbered=False) / ".history.yaml"
+    )
 
 
 @pytest.fixture(scope="module")
@@ -56,7 +58,7 @@ def path2yaml_written(tmp_path_factory):
     Returns:
         str: initated path. The yaml has been touched and written.
     """
-    p = str(tmp_path_factory.mktemp("tmp2", numbered=False) / "history.yaml")
+    p = str(tmp_path_factory.mktemp("tmp2", numbered=False) / ".history.yaml")
     pathlib.Path(p).touch()
     record("banana", p)
 
