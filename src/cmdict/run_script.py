@@ -136,7 +136,7 @@ def extract(pdf_path, color, save):
         words = extract_words(pdf_path, color)
 
         if save:
-            with open(_db_dir + "/extraction.yaml", "w") as f:
+            with open(_db_dir + "/.extraction.yaml", "w") as f:
                 yaml.safe_dump(list(words), f)
 
         for i, word in enumerate(words):
