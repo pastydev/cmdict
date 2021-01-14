@@ -27,5 +27,5 @@ def test_ecdict_singleton():
     res = ecdict_engine.query("play")
     assert isinstance(res, dict) and len(res) > 0
 
-    res = ecdict_engine.query("good")
+    res = ecdict_engine.query("apple")
     assert isinstance(res, dict) and len(res) > 0

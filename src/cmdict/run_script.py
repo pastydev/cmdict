@@ -15,7 +15,7 @@ from cmdict.pdf_tools import extract_words
 from cmdict.txt_tools import scan_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
-DB_VALID_SIZE = 851288064
+DB_VALID_SIZE = (851288064, 17408)  # (full size, test size)
 
 _init_colorama(autoreset=True)
 _db_dir = os.path.join(str(pathlib.Path(__file__).parent), "data")
@@ -70,7 +70,10 @@ def download():
             zip_path = pathlib.Path(db_zip)
             if zip_path.is_file():
                 zip_path.unlink()
-            if _db_path.is_file() and _db_path.stat().st_size != DB_VALID_SIZE:
+            if (
+                _db_path.is_file()
+                and _db_path.stat().st_size not in DB_VALID_SIZE
+            ):
                 _db_path.unlink()
 
 
@@ -183,7 +186,8 @@ def _valid_db_exists():
     Returns:
         bool: if a valid database is found.
     """
-    return _db_path.is_file() and _db_path.stat().st_size == DB_VALID_SIZE
+    print(_db_path.stat().st_size)
+    return _db_path.is_file() and _db_path.stat().st_size in DB_VALID_SIZE
 
 
 def _echo_divider():
