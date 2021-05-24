@@ -80,19 +80,27 @@ def download():
 
 @cli.command()
 @click.argument("words", nargs=-1)
-def search(words):
+@click.option(
+    "--german", "-de", is_flag=True, help="Whether it is German word."
+)
+def search(words, german):
     """Type in one English word and echo its Chinese translation.
 
     Args:
         words (str): one English word to be searched. For example,
             "a lot" or "mirror".
+        german (bool): whether it is German word.
     """
-    if _valid_db_exists():
-        db_engine = ECDICTConnector()
-        for i, word in enumerate(words):
-            _echo_item(word, db_engine.query(word))
+    if german:
+        for _, word in enumerate(words):
+            _echo_item_de(word, None)
     else:
-        _echo_warn_download()
+        if _valid_db_exists():
+            db_engine = ECDICTConnector()
+            for _, word in enumerate(words):
+                _echo_item(word, db_engine.query(word))
+        else:
+            _echo_warn_download()
 
 
 @cli.command()
@@ -181,6 +189,26 @@ def _echo_item(word, res):
             + word
             + Style.RESET_ALL
             + " can not be found in the database!"
+        )
+
+
+def _echo_item_de(word, res):
+    """Echo a German word search result to cli.
+
+    Args:
+        word (str): The word.
+        res (dict): The word search result.
+    """
+    _echo_divider()
+    if res:
+        click.echo(Fore.CYAN + Style.BRIGHT + res + "\n")
+    else:
+        click.echo(
+            Fore.RED
+            + Style.BRIGHT
+            + word
+            + Style.RESET_ALL
+            + " can not be returned successfully!"
         )
 
 
