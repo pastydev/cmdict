@@ -1,3 +1,6 @@
+default_language_version:
+    python: python3.6
+
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.1.0
@@ -8,10 +11,9 @@ repos:
     - id: trailing-whitespace
 
 -   repo: https://github.com/ambv/black
-    rev: stable
+    rev: 19.10b0
     hooks:
     - id: black
-      language_version: python3.7
 
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.2
@@ -25,6 +27,6 @@ repos:
           - 'pydocstyle'
 
 -   repo: https://github.com/terrencepreilly/darglint
-    rev: master
+    rev: v1.4.1
     hooks:
     - id: darglint
