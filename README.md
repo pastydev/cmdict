@@ -16,6 +16,6 @@ or [`pip`](https://pypi.org/project/cmdict/):
 pip install cmdict
 ```
 
-## Supported Sources
+## Support
 
-- [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases)
+- [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases): a free English to Chinese dictionary database (英中双解词典数据库).
