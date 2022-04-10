@@ -22,6 +22,10 @@ def test_cli_search():
     """Test cli word search."""
     res = CliRunner().invoke(search, "play")
     assert "theatrical performance of a drama" in res.output
+    res = CliRunner().invoke(search, ["play", "-de"])
+    assert "play can not be returned successfully" in res.output
+    res = CliRunner().invoke(search, ["play", "--german"])
+    assert "play can not be returned successfully" in res.output
 
 
 def test_cli_search_non_exist_word():
