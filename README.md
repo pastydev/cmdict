@@ -16,19 +16,6 @@ or [`pip`](https://pypi.org/project/cmdict/):
 pip install cmdict
 ```
 
-## Support
-
-- [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases): a free English to Chinese dictionary database (英中双解词典数据库).
-
-```
-$ cmdict download
---------
-Downloading the dictionary...
-100%|████████████████████████| 217M/217M [00:29<00:00, 666MiB/s]
-
-cmdict is ready to use!
-```
-
 ## How to Use
 
 ```
@@ -47,7 +34,7 @@ Commands:
   search    Type in one English word and echo its Chinese translation.
 ```
 
-Echo Chinese translation of one or multiple English words.
+To Eecho Chinese translation of one or multiple English words.
 
 ```
 $ cmdict search apple
@@ -71,7 +58,7 @@ apple
 $ cmdict search apple banana
 ```
 
-Extract highlighted words in blue of `sample.pdf`:
+To extract highlighted words in blue of `sample.pdf`:
 
 ```
 cmdict extract sample.pdf --color blue
@@ -89,4 +76,17 @@ apple
     oxford: 1
     bnc: 2446
     frq: 2695
+```
+
+## Support
+
+- [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases): a free English to Chinese dictionary database (英中双解词典数据库).
+
+```
+$ cmdict download
+--------
+Downloading the dictionary...
+100%|████████████████████████| 217M/217M [00:29<00:00, 666MiB/s]
+
+cmdict is ready to use!
 ```
