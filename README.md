@@ -24,7 +24,7 @@ pip install cmdict
 $ cmdict download
 --------
 Downloading the dictionary...
-100%|█████████| 217M/217M [00:29<00:00, 666MiB/s]
+100%|████████████████████████| 217M/217M [00:29<00:00, 666MiB/s]
 
 cmdict is ready to use!
 ```
@@ -32,7 +32,49 @@ cmdict is ready to use!
 ## How to Use
 
 ```
+$ cmdict --help
+Usage: cmdict [OPTIONS] COMMAND [ARGS]...
+
+  Command line interface.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  download  Download necessary database before using cmdict.
+  extract   Extract highlighted words with specified color in a PDF file.
+  scan      Scan all words in a txt file and return search results.
+  search    Type in one English word and echo its Chinese translation.
+```
+
+Echo Chinese translation of one or multiple English words.
+
+```
 $ cmdict search apple
+--------
+apple
+
+    phonetic: 'æpl
+    definition: 
+        - n. fruit with red or yellow or green skin and sweet to tart crisp whitish flesh
+        - n. native Eurasian tree widely cultivated in many varieties for its firm rounded edible fruits
+    trans: 
+        - n. 苹果, 家伙
+        - [医] 苹果
+    collins: 3
+    oxford: 1
+    bnc: 2446
+    frq: 2695
+```
+
+```
+$ cmdict search apple banana
+```
+
+Extract highlighted words in blue of `sample.pdf`:
+
+```
+cmdict extract sample.pdf --color blue
 --------
 apple
 
