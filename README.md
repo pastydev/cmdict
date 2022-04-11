@@ -18,7 +18,7 @@ pip install cmdict
 
 ## How to Use
 
-```
+```console
 $ cmdict --help
 Usage: cmdict [OPTIONS] COMMAND [ARGS]...
 
@@ -34,9 +34,9 @@ Commands:
   search    Type in one English word and echo its Chinese translation.
 ```
 
-To Eecho Chinese translation of one or multiple English words.
+To echo Chinese translation for one or multiple English words.
 
-```
+```console
 $ cmdict search apple
 --------
 apple
@@ -54,14 +54,14 @@ apple
     frq: 2695
 ```
 
-```
+```console
 $ cmdict search apple banana
 ```
 
 To extract highlighted words in blue of `sample.pdf`:
 
-```
-cmdict extract sample.pdf --color blue
+```console
+$ cmdict extract sample.pdf --color blue
 --------
 apple
 
@@ -82,7 +82,7 @@ apple
 
 - [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases): a free English to Chinese dictionary database (英中双解词典数据库).
 
-```
+```console
 $ cmdict download
 --------
 Downloading the dictionary...
