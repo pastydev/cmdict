@@ -5,6 +5,8 @@ description = "A command line dictionary toolset"
 authors = ["zequnyu <zequnyu11@gmail.com>", "edxu96 <edxu96@outlook.com>"]
 license = "GPL-3.0"
 exclude = ["src/cmdict/data/*"]
+readme = "README.md"
+repository = "https://github.com/pasty-dev/cmdict"
 
 [tool.poetry.scripts]
 cmdict = 'cmdict:run_script.cli'
