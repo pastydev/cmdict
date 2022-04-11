@@ -42,10 +42,10 @@ $ cmdict search apple
 apple
 
     phonetic: 'æpl
-    definition: 
+    definition:
         - n. fruit with red or yellow or green skin and sweet to tart crisp whitish flesh
         - n. native Eurasian tree widely cultivated in many varieties for its firm rounded edible fruits
-    trans: 
+    trans:
         - n. 苹果, 家伙
         - [医] 苹果
     collins: 3
@@ -66,10 +66,10 @@ $ cmdict extract sample.pdf --color blue
 apple
 
     phonetic: 'æpl
-    definition: 
+    definition:
         - n. fruit with red or yellow or green skin and sweet to tart crisp whitish flesh
         - n. native Eurasian tree widely cultivated in many varieties for its firm rounded edible fruits
-    trans: 
+    trans:
         - n. 苹果, 家伙
         - [医] 苹果
     collins: 3
