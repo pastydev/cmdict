@@ -16,6 +16,16 @@ or [`pip`](https://pypi.org/project/cmdict/):
 pip install cmdict
 ```
 
+## Quick Start
+
+The easiest way is to chat with [`cmdict_bot`](https://t.me/cmdict_bot) in Telegram.
+
+Send an English word and receive its definitions. For example:
+
+<p align="center">
+  <img width="600" src="img/light-demo.png">
+</p>
+
 ## How to Use
 
 ```console
