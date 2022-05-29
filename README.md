@@ -2,6 +2,14 @@
 
 `cmdict` is a command-line dictionary toolset.
 
+## Quick Start
+
+Want to have a try in 5 seconds? Chat with [`cmdict_bot`](https://t.me/cmdict_bot) on [Telegram](https://telegram.org/).
+
+Send an English word and receive its definitions. For example:
+
+<img width="600" src="img/light-demo.png">
+
 ## Installation
 
 Use [`homebrew`](https://brew.sh/):
@@ -15,14 +23,6 @@ or [`pip`](https://pypi.org/project/cmdict/):
 ```sh
 pip install cmdict
 ```
-
-## Quick Start
-
-The easiest way is to chat with [`cmdict_bot`](https://t.me/cmdict_bot) in Telegram.
-
-Send an English word and receive its definitions. For example:
-
-<img width="600" src="img/light-demo.png">
 
 ## How to Use
 
