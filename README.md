@@ -4,9 +4,7 @@
 
 ## Quick Start
 
-Want to have a try in 5 seconds? Chat with [`cmdict_bot`](https://t.me/cmdict_bot) on [Telegram](https://telegram.org/).
-
-Send an English word and receive its definitions. For example:
+Want to have a try in 5 seconds? Text [`cmdict_bot`](https://t.me/cmdict_bot) on [Telegram](https://telegram.org/). Send an English word and receive its definitions. For example:
 
 <img width="600" src="img/light-demo.png">
 
