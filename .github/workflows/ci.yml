@@ -3,8 +3,18 @@ name: cmdict
 on:
   push:
     branches: [ master ]
+    paths:
+      - '!README.md'
+      - '!LICENSE'
+      - '!.gitignore'
+      - '!codecov.yml'
   pull_request:
     branches: [ master ]
+    paths:
+      - '!README.md'
+      - '!LICENSE'
+      - '!.gitignore'
+      - '!codecov.yml'
 
 jobs:
   build:
