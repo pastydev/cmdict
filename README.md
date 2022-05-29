@@ -22,9 +22,7 @@ The easiest way is to chat with [`cmdict_bot`](https://t.me/cmdict_bot) in Teleg
 
 Send an English word and receive its definitions. For example:
 
-<p align="center">
-  <img width="600" src="img/light-demo.png">
-</p>
+<img width="600" src="img/light-demo.png">
 
 ## How to Use
 
