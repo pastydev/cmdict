@@ -2,13 +2,13 @@
 
 `cmdict` is a command-line dictionary toolset.
 
-## Quick Start
+## Quick start
 
 Want to have a try in 5 seconds? Text [`cmdict_bot`](https://t.me/cmdict_bot) on [Telegram](https://telegram.org/). Send an English word and receive its definitions. For example:
 
 <img width="600" src="img/light-demo.png">
 
-## Installation
+## How to install
 
 Use [`homebrew`](https://brew.sh/):
 
@@ -22,11 +22,11 @@ or [`pip`](https://pypi.org/project/cmdict/):
 pip install cmdict
 ```
 
-## How to Contribute
+## How to contribute
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=master&repo=266903250&machine=largePremiumLinux&location=WestEurope)
 
-## How to Use
+## How to use
 
 ```console
 $ cmdict --help
@@ -88,7 +88,7 @@ apple
     frq: 2695
 ```
 
-## Support
+## Supported database
 
 - [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases): a free English to Chinese dictionary database (英中双解词典数据库).
 
