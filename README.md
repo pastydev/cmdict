@@ -1,4 +1,4 @@
-# cmdict &middot; [![pypi](https://badge.fury.io/py/cmdict.svg)](https://pypi.org/project/cmdict/) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zequnyu/cmdict/blob/master/LICENSE) [![Github Actions](https://github.com/zequnyu/cmdict/workflows/cmdict/badge.svg)](https://github.com/zequnyu/cmdict/actions) [![codecov](https://codecov.io/gh/zequnyu/cmdict/branch/master/graph/badge.svg)](https://codecov.io/gh/zequnyu/cmdict) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org) [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=master&repo=266903250&machine=largePremiumLinux&location=WestEurope)
+# cmdict &middot; [![pypi](https://badge.fury.io/py/cmdict.svg)](https://pypi.org/project/cmdict/) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zequnyu/cmdict/blob/master/LICENSE) [![Github Actions](https://github.com/zequnyu/cmdict/workflows/cmdict/badge.svg)](https://github.com/zequnyu/cmdict/actions) [![codecov](https://codecov.io/gh/zequnyu/cmdict/branch/master/graph/badge.svg)](https://codecov.io/gh/zequnyu/cmdict) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org) [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 `cmdict` is a command-line dictionary toolset.
 
@@ -21,6 +21,10 @@ or [`pip`](https://pypi.org/project/cmdict/):
 ```sh
 pip install cmdict
 ```
+
+## How to Contribute
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=master&repo=266903250&machine=largePremiumLinux&location=WestEurope)
 
 ## How to Use
 
