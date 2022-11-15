@@ -9,7 +9,7 @@
 	},
 
 	"features": {
-		"ghcr.io/devcontainers/features/python:1": {
+		"ghcr.io/devcontainers/features/python:1.0.5": {
 			"version": "3.8",
 			"installTools": false,
 			"installJupyterlab": false
