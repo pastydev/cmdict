@@ -20,6 +20,8 @@ on:
       - '!.python-version'
       - '!poetry.toml'
   workflow_dispatch:
+  schedule:
+    - cron: '30 5 * * 1'
 
 jobs:
   build:
