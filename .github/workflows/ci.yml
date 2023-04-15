@@ -8,6 +8,8 @@ on:
       - '!LICENSE'
       - '!.gitignore'
       - '!codecov.yml'
+      - '!.python-version'
+      - '!poetry.toml'
   pull_request:
     branches: [ master ]
     paths:
@@ -15,6 +17,9 @@ on:
       - '!LICENSE'
       - '!.gitignore'
       - '!codecov.yml'
+      - '!.python-version'
+      - '!poetry.toml'
+  workflow_dispatch:
 
 jobs:
   build:
