@@ -1,4 +1,4 @@
-"""Functions for seaching in command line."""
+"""Functions for searching in command line."""
 import os
 import pathlib
 import zipfile
