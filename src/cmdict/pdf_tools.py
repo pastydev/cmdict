@@ -1,11 +1,16 @@
 """Functions to handle highlights in PDF files."""
-import fitz
-
 from cmdict.ecdict_connector import ECDICTConnector
 from cmdict.utils import remove_punctuation
 
+PDF_FEATURES: bool
+"""If the features for PDF are enabled."""
+try:
+    import fitz
+except ImportError:
+    PDF_FEATURES = False
+else:
+    PDF_FEATURES = True
 
-# Mac OS Preview supported colors
 PREVIEW_COLORS = {
     "yellow": [250, 205, 90],
     "green": [124, 200, 104],
@@ -13,6 +18,7 @@ PREVIEW_COLORS = {
     "pink": [251, 92, 137],
     "purple": [200, 133, 218],
 }
+"""Colors supported by MacOS Preview by default."""
 
 PDF_ANNOT_HIGHLIGHT = 8
 
