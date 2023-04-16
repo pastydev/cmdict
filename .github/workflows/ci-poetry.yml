@@ -1,4 +1,4 @@
-name: CI using pip
+name: CI using Poetry
 
 on:
   push:
@@ -8,23 +8,31 @@ on:
       - '!LICENSE'
       - '!.gitignore'
       - '!codecov.yml'
+      - '!.python-version'
+      - '!poetry.toml'
   pull_request:
+    types: [ opened, reopened ]
     branches: [ master ]
     paths:
       - '!README.md'
       - '!LICENSE'
       - '!.gitignore'
       - '!codecov.yml'
+      - '!.python-version'
+      - '!poetry.toml'
   workflow_dispatch:
+  schedule:
+    - cron: '30 5 * * 1'
 
 jobs:
-  test:
-    name: pip install, check pre-commit and run pytest
+  build:
+    name: CI build
     runs-on: macos-latest
 
     strategy:
       matrix:
         python-version: [3.7.1, 3.6.7]
+        poetry-version: [1.4.1]
 
     steps:
     - uses: actions/checkout@master
@@ -34,15 +42,19 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Install poetry
+      uses: snok/install-poetry@v1.3.3
+      with:
+        version: ${{ matrix.poetry-version }}
+
     - name: Install dependencies
-      run: |
-        pip install -r ./requirements.txt
+      run: poetry install --with dev,pdf
 
     - name: Check pre-commit
-      run: pre-commit install && pre-commit run --all-files
+      run: poetry run pre-commit install && poetry run pre-commit run --all-files
 
     - name: Run pytest
-      run: pytest -n auto --cov=./ --cov-report=xml
+      run: poetry run pytest -n auto --cov=./ --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
