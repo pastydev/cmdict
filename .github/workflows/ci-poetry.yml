@@ -1,4 +1,4 @@
-name: cmdict
+name: CI using Poetry
 
 on:
   push:
