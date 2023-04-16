@@ -1,4 +1,4 @@
-"""Functions for seaching in command line."""
+"""Functions for searching in command line."""
 import os
 import pathlib
 import zipfile
@@ -11,7 +11,7 @@ from tqdm import tqdm
 import yaml
 
 from cmdict.ecdict_connector import ECDICTConnector
-from cmdict.pdf_tools import extract_words
+from cmdict.pdf_tools import extract_words, PDF_FEATURES
 from cmdict.txt_tools import scan_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501
@@ -130,7 +130,14 @@ def extract(pdf_path, color, save):
         pdf_path (str): path to the PDF file.
         color (str): three numbers ranging between 0 and 1.
         save (bool): if extracted words will be saved in yaml file.
+
+    Raises:
+        ImportError: when the features for PDF are not enabled, most
+            likely because ``PyMuPDF`` is not installed.
     """
+    if not PDF_FEATURES:
+        raise ImportError("The features for PDF are not enabled.")
+
     if _valid_db_exists():
         db_engine = ECDICTConnector()
         words = extract_words(pdf_path, color)

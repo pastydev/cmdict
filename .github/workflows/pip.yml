@@ -1,4 +1,4 @@
-name: pip install and run tests
+name: pip
 
 on:
   push:
@@ -19,7 +19,7 @@ on:
 
 jobs:
   test:
-    name: pip install and run tests
+    name: pip install, check pre-commit and run pytest
     runs-on: macos-latest
 
     strategy:
@@ -35,7 +35,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
-      run: pip install -r ./requirements.txt
+      run: |
+        pip install -r ./requirements.txt
 
     - name: Check pre-commit
       run: pre-commit install && pre-commit run --all-files
