@@ -1,4 +1,4 @@
-name: CI using pip
+name: CI
 
 on:
   push:
