@@ -53,11 +53,9 @@ exclude = '''
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
-# requires = ["setuptools", "wheel"]
-# build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
 rootdir = "."
 pythonpath = ["src"]
-testpaths = ["tests/cmdict"]
+testpaths = ["tests"]
