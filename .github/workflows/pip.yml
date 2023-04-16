@@ -36,9 +36,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m venv .venv
         pip install -r ./requirements.txt
-        pip install --editable .
 
     - name: Check pre-commit
       run: pre-commit install && pre-commit run --all-files
