@@ -11,6 +11,7 @@ on:
       - '!.python-version'
       - '!poetry.toml'
   pull_request:
+    types: [ opened, reopened ]
     branches: [ master ]
     paths:
       - '!README.md'
