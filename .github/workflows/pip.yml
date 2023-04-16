@@ -42,7 +42,7 @@ jobs:
       run: pre-commit install && pre-commit run --all-files
 
     - name: Run pytest
-      run: pytest tests/cmdict -n auto --cov=./ --cov-report=xml
+      run: pytest -n auto --cov=./ --cov-report=xml
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
