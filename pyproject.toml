@@ -58,5 +58,6 @@ build-backend = "poetry.masonry.api"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-pythonpath = ["."]
+rootdir = "."
+pythonpath = ["src"]
 testpaths = ["tests/cmdict"]
