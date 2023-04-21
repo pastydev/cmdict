@@ -3,18 +3,8 @@ name: CI
 on:
   push:
     branches: [ master ]
-    paths:
-      - '!README.md'
-      - '!LICENSE'
-      - '!.gitignore'
-      - '!codecov.yml'
   pull_request:
     branches: [ master ]
-    paths:
-      - '!README.md'
-      - '!LICENSE'
-      - '!.gitignore'
-      - '!codecov.yml'
   workflow_dispatch:
 
 jobs:
