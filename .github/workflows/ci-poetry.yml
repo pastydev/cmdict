@@ -3,23 +3,23 @@ name: CI using Poetry
 on:
   push:
     branches: [ master ]
-    paths:
-      - '!README.md'
-      - '!LICENSE'
-      - '!.gitignore'
-      - '!codecov.yml'
-      - '!.python-version'
-      - '!poetry.toml'
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - 'codecov.yml'
+      - '.python-version'
+      - 'poetry.toml'
   pull_request:
     types: [ opened, reopened ]
     branches: [ master ]
-    paths:
-      - '!README.md'
-      - '!LICENSE'
-      - '!.gitignore'
-      - '!codecov.yml'
-      - '!.python-version'
-      - '!poetry.toml'
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - 'codecov.yml'
+      - '.python-version'
+      - 'poetry.toml'
   workflow_dispatch:
   schedule:
     - cron: '30 5 * * 1'
