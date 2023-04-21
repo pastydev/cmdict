@@ -3,14 +3,14 @@ name: CI
 on:
   push:
     branches: [ master ]
-    paths:
+    paths-ignore:
       - '!README.md'
       - '!LICENSE'
       - '!.gitignore'
       - '!codecov.yml'
   pull_request:
     branches: [ master ]
-    paths:
+    paths-ignore:
       - '!README.md'
       - '!LICENSE'
       - '!.gitignore'
