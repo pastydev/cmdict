@@ -77,7 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Install Python
+      - name: Install dependecies, which will not be built again
         uses: actions/setup-python@v2
         with:
           python-version: 3.7.1
