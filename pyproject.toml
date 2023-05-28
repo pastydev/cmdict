@@ -51,7 +51,7 @@ exclude = '''
 '''
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=1.2.0a1"]
 build-backend = "poetry.masonry.api"
 
 [tool.pytest.ini_options]
