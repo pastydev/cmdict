@@ -24,7 +24,7 @@ on:
 
 jobs:
   test:
-    name: pip install, check pre-commit and run pytest
+    name: pre-commit and test
     runs-on: ${{ matrix.os }}
 
     strategy:
