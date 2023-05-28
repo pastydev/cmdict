@@ -77,17 +77,17 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7.1
-          cache: 'pip'
+      # - name: Install Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: 3.7.1
+      #     cache: 'pip'
 
       - name: Build wheels
         run: |
-          pip wheel -w ./dist/ -r ./requirements.txt --require-hashes
+          pip wheel -w ./dist/ -r ./requirements.txt --require-hashes --src .
 
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}
-          path: ./dist/*.whl
+          path: ./dist/cmdict-*.whl
