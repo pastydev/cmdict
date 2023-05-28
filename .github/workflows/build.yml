@@ -3,9 +3,23 @@ name: Build
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - 'codecov.yml'
+      - '.python-version'
+      - 'poetry.toml'
   pull_request:
     types: [ opened, reopened ]
     branches: [ master ]
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - '.gitignore'
+      - 'codecov.yml'
+      - '.python-version'
+      - 'poetry.toml'
   workflow_dispatch:
 
 jobs:
