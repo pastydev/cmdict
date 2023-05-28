@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7.1, 3.6.7]
-        os: [ubuntu-20.04, windows-2019, macos-11]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@master
@@ -52,3 +52,35 @@ jobs:
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
+
+  build:
+    name: build wheels
+    runs-on: ${{ matrix.os }}
+    needs: test
+    # if: github.ref == 'refs/heads/master'
+
+    strategy:
+      matrix:
+        python-version: [3.7.1, 3.6.7]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.1
+
+      - name: Install dependencies
+        run: |
+          pip install -r ./requirements.txt
+
+      - name: Build wheels
+        run: |
+          pip wheel -w ./dist/ .
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}
+          path: ./dist/*.whl
