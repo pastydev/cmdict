@@ -77,11 +77,11 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      # - name: Install Python
-      #   uses: actions/setup-python@v2
-      #   with:
-      #     python-version: 3.7.1
-      #     cache: 'pip'
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.1
+          cache: 'pip'
 
       - name: Build wheels
         run: |
