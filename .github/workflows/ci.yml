@@ -21,6 +21,10 @@ on:
       - 'poetry.toml'
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: pre-commit and test
