@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-        os: [ubuntu-22.04, windows-2022, macos-11, macos-12-xl]
+        os: [ubuntu-22.04, windows-2022, macos-11]
     defaults:
       run:
         shell: bash
