@@ -74,6 +74,11 @@ jobs:
       uses: codecov/codecov-action@v1
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/cmdict
+    permissions:
+      id-token: write
     runs-on: ubuntu-22.04
     needs: test
     steps:
