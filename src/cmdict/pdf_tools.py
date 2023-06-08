@@ -1,6 +1,4 @@
 """Functions to handle highlights in PDF files."""
-from fitz import Document
-
 from cmdict.ecdict_connector import ECDICTConnector
 from cmdict.utils import remove_punctuation
 
@@ -58,7 +56,7 @@ def extract_words(file_path, color):
     return res
 
 
-def _iterate_all_word_blocks(document: Document):
+def _iterate_all_word_blocks(document: fitz.Document):
     """Iterate word blocks in order from the document.
 
     Args:
@@ -72,12 +70,12 @@ def _iterate_all_word_blocks(document: Document):
             yield wb
 
 
-def _iterate_filtered_annotations(document, color):
+def _iterate_filtered_annotations(document: fitz.Document, color: str):
     """Iterate Annotations that are highlighted by target color.
 
     Args:
-        document (fitz.Document): the document.
-        color (str): targeted color.
+        document: the document.
+        color: targeted color.
 
     Yields:
         fitz.Annot: the annotation.
