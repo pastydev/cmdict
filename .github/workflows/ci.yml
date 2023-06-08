@@ -34,7 +34,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.7.1, 3.8.10]
+        python-version: [3.7, 3.8]
         # Need to fix the version of Ubuntu and macos, because Python
         # 3.6 is unavailable in x64 macos or arch x64 Ubuntu.
         # https://github.blog/2023-03-01-github-actions-introducing-faster-github-hosted-x64-macos-runners/.
@@ -74,7 +74,7 @@ jobs:
       - name: Install dependecies
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7.1
+          python-version: 3.7
           cache: 'pip'
 
       - name: Build wheels
