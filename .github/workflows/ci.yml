@@ -4,7 +4,6 @@ on:
   push:
     branches: [ master ]
     paths-ignore:
-      - '.github/workflows/ci-poetry.yml'
       - 'README.md'
       - 'LICENSE'
       - '.gitignore'
@@ -14,7 +13,6 @@ on:
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - '.github/workflows/ci-poetry.yml'
       - 'README.md'
       - 'LICENSE'
       - '.gitignore'
@@ -22,6 +20,8 @@ on:
       - '.python-version'
       - 'poetry.toml'
   workflow_dispatch:
+  schedule:
+    - cron: '30 5 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -31,7 +31,6 @@ jobs:
   test:
     name: pre-commit and test
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         python-version: [3.7, 3.8]
@@ -39,49 +38,46 @@ jobs:
         # 3.6 is unavailable in x64 macos or arch x64 Ubuntu.
         # https://github.blog/2023-03-01-github-actions-introducing-faster-github-hosted-x64-macos-runners/.
         os: [ubuntu-20.04, windows-latest, macos-11]
-
     steps:
     - uses: actions/checkout@master
-
     - name: Install Python
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
-
+    - name: Install latest Poetry
+      uses: snok/install-poetry@v1.3.3
     - name: Install dependencies
       run: |
-        pip install -r ./requirements.txt
-
-    - name: Check pre-commit
-      run: pre-commit install && pre-commit run --all-files
-
-    - name: Run pytest
-      run: pytest -n auto --cov=./ --cov-report=xml
-
+        poetry install --with dev,pdf
+    - name: Run pre-commit
+      run: |
+        poetry run pre-commit install
+        poetry run pre-commit run --all-files
+    - name: Run tests
+      run: poetry run pytest -n auto --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
-
-  build:
-    name: Build wheels
+  deploy:
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pytest-dev/pluggy'
     runs-on: ubuntu-20.04
     needs: test
-    if: github.ref == 'refs/heads/master'
-
     steps:
       - uses: actions/checkout@master
-
       - name: Install dependecies
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
           cache: 'pip'
-
+      - name: Install latest Poetry
+        uses: snok/install-poetry@v1.3.3
       - name: Build wheels
         run: |
-          pip wheel -w ./dist/ .
-
-      - uses: actions/upload-artifact@v3
+          poetry build
+      - name: Upload wheel and tar ball as artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}
-          path: ./dist/cmdict-*.whl
+          name: dist
+          path: ./dist/*
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
