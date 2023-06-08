@@ -1,4 +1,6 @@
 """Functions to handle highlights in PDF files."""
+from fitz import Document
+
 from cmdict.ecdict_connector import ECDICTConnector
 from cmdict.utils import remove_punctuation
 
@@ -56,17 +58,17 @@ def extract_words(file_path, color):
     return res
 
 
-def _iterate_all_word_blocks(document):
+def _iterate_all_word_blocks(document: Document):
     """Iterate word blocks in order from the document.
 
     Args:
-        document (fitz.Document): the document.
+        document: the PDF document.
 
     Yields:
         tuple: word block.
     """
     for page in document:
-        for wb in sorted(page.getText("words"), key=lambda w: (w[1], w[0])):
+        for wb in sorted(page.get_text("words"), key=lambda w: (w[1], w[0])):
             yield wb
 
 

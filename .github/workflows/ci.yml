@@ -3,6 +3,8 @@ name: CI
 on:
   push:
     branches: [ master ]
+    tags:
+      - "*"
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
@@ -20,6 +22,8 @@ on:
       - '.python-version'
       - 'poetry.toml'
   workflow_dispatch:
+  schedule:
+    - cron: '30 5 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -29,64 +33,65 @@ jobs:
   test:
     name: pre-commit and test
     runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
-        python-version: [3.7.1, 3.6.7]
-        # Need to fix the version of Ubuntu and macos, because Python
-        # 3.6 is unavailable in x64 macos or arch x64 Ubuntu.
-        # https://github.blog/2023-03-01-github-actions-introducing-faster-github-hosted-x64-macos-runners/.
-        os: [ubuntu-20.04, windows-latest, macos-11]
-
+        python-version: [3.7, 3.8]
+        os: [ubuntu-22.04, windows-2022, macos-11]
+    defaults:
+      run:
+        shell: bash
     steps:
     - uses: actions/checkout@master
-
     - name: Install Python
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-        cache: 'pip'
-
+    - name: Install latest Poetry
+      uses: snok/install-poetry@v1.3.3
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    - name: Load cached venv
+      id: cached-pip-wheels
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
     - name: Install dependencies
+      run: poetry install --no-interaction --no-root --with dev,pdf
+    - name: Install library
+      run: poetry install --no-interaction
+    - run: |
+        source $VENV
+        pytest --version
+    - name: Run pre-commit
       run: |
-        pip install -r ./requirements.txt
-
-    - name: Check pre-commit
-      run: pre-commit install && pre-commit run --all-files
-
-    - name: Run pytest
-      run: pytest -n auto --cov=./ --cov-report=xml
-
+        poetry run pre-commit install
+        poetry run pre-commit run --all-files
+    - name: Run tests
+      run: poetry run pytest -n auto --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
-
-  build:
-    name: build wheels
-    runs-on: ${{ matrix.os }}
+  publish:
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
+    runs-on: ubuntu-22.04
     needs: test
-    if: github.ref == 'refs/heads/master'
-
-    strategy:
-      matrix:
-        # Need to fix the version of Ubuntu and macos, because Python
-        # 3.6 is unavailable in x64 macos or arch x64 Ubuntu.
-        # https://github.blog/2023-03-01-github-actions-introducing-faster-github-hosted-x64-macos-runners/.
-        os: [ubuntu-20.04, windows-latest, macos-11]
-
     steps:
       - uses: actions/checkout@master
-
-      - name: Install dependecies, which will not be built again
+      - name: Install dependecies
         uses: actions/setup-python@v2
         with:
-          python-version: 3.7.1
-          cache: 'pip'
-
+          python-version: 3.7
+          cache: pip
+      - name: Install latest Poetry
+        uses: snok/install-poetry@v1.3.3
       - name: Build wheels
         run: |
-          pip wheel -w ./dist/ .
-
-      - uses: actions/upload-artifact@v3
+          poetry build
+      - name: Upload wheel and tar ball as artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}
-          path: ./dist/cmdict-*.whl
+          name: dist
+          path: ./dist/*
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
