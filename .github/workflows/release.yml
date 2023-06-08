@@ -15,6 +15,7 @@ on:
 jobs:
   pypi-publish:
     name: Upload release to PyPI
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
     runs-on: ubuntu-latest
     environment:
       name: pypi
