@@ -4,74 +4,116 @@ on:
   push:
     branches: [ master ]
     tags:
-      - "*"
+    - "*"
     paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
-      - '.gitignore'
-      - 'codecov.yml'
-      - '.python-version'
-      - 'poetry.toml'
+    - 'README.md'
+    - 'LICENSE'
+    - '.gitignore'
+    - 'codecov.yml'
+    - '.python-version'
+    - 'poetry.toml'
   pull_request:
     branches: [ master ]
     paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
-      - '.gitignore'
-      - 'codecov.yml'
-      - '.python-version'
-      - 'poetry.toml'
+    - 'README.md'
+    - 'LICENSE'
+    - '.gitignore'
+    - 'codecov.yml'
+    - '.python-version'
+    - 'poetry.toml'
   workflow_dispatch:
   schedule:
-    - cron: '30 5 * * 1'
+  - cron: '30 5 * * 1'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: pre-commit and test
+  # unit-test:
+  #   name: Run pre-commit and unit tests
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       python-version: [3.7, 3.8]
+  #       os: [ubuntu-22.04, windows-2022, macos-11]
+  #   defaults:
+  #     run:
+  #       shell: bash
+  #   steps:
+  #   - uses: actions/checkout@master
+  #   - name: Install Python
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: ${{ matrix.python-version }}
+  #   - name: Install latest Poetry
+  #     uses: snok/install-poetry@v1.3.3
+  #     with:
+  #       virtualenvs-create: true
+  #       virtualenvs-in-project: true
+  #   - name: Load cached venv
+  #     id: cached-pip-wheels
+  #     uses: actions/cache@v3
+  #     with:
+  #       path: ~/.cache
+  #       key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+  #   - name: Install dependencies
+  #     run: poetry install --no-interaction --no-root --with dev,pdf
+  #   - name: Install library
+  #     run: poetry install --no-interaction
+  #   - run: |
+  #       source $VENV
+  #       pytest --version
+  #   - name: Run pre-commit
+  #     run: |
+  #       poetry run pre-commit install
+  #       poetry run pre-commit run --all-files
+  #   - name: Run tests
+  #     run: poetry run pytest -n auto --cov=./ --cov-report=xml
+  #   - name: Upload coverage to Codecov
+  #     uses: codecov/codecov-action@v1
+  build:
+    runs-on: ubuntu-22.04
+    # needs: unit-test
+    steps:
+    - name: Install dependecies
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+        cache: pip
+    - name: Install latest Poetry
+      uses: snok/install-poetry@v1.3.3
+    - name: Build wheels
+      run: |
+        poetry build
+    - name: Upload wheel and tar ball as artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: ./dist/*
+  integration-test:
     runs-on: ${{ matrix.os }}
+    needs: build
     strategy:
       matrix:
         python-version: [3.7, 3.8]
         os: [ubuntu-22.04, windows-2022, macos-11]
-    defaults:
-      run:
-        shell: bash
     steps:
-    - uses: actions/checkout@master
     - name: Install Python
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install latest Poetry
-      uses: snok/install-poetry@v1.3.3
+    - uses: actions/download-artifact@master
       with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-    - name: Load cached venv
-      id: cached-pip-wheels
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-    - name: Install dependencies
-      run: poetry install --no-interaction --no-root --with dev,pdf
-    - name: Install library
-      run: poetry install --no-interaction
-    - run: |
-        source $VENV
-        pytest --version
-    - name: Run pre-commit
+        name: dist
+        path: ./dist/
+    - name: Install wheel
       run: |
-        poetry run pre-commit install
-        poetry run pre-commit run --all-files
-    - name: Run tests
-      run: poetry run pytest -n auto --cov=./ --cov-report=xml
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+        python -m pip install dist/cmdict-*py3-none-any.whl
+    - name: Integration test
+      run: |
+        python -m cmdict --help
+        cmdict
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
     environment:
@@ -80,23 +122,11 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-22.04
-    needs: test
+    needs: integration-test
     steps:
-      - uses: actions/checkout@master
-      - name: Install dependecies
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-          cache: pip
-      - name: Install latest Poetry
-        uses: snok/install-poetry@v1.3.3
-      - name: Build wheels
-        run: |
-          poetry build
-      - name: Upload wheel and tar ball as artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: ./dist/*
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+    - uses: actions/download-artifact@master
+      with:
+        name: dist
+        path: ./dist/
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
