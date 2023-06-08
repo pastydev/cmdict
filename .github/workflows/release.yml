@@ -23,17 +23,17 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@master
-      - name: Install dependecies, which will not be built again
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.7.1
           cache: 'pip'
-      - name: Install poetry
+      - name: Install Poetry
         uses: snok/install-poetry@v1.3.3
       - name: Install dependencies
         run: |
           poetry install
-      - name: Run test
+      - name: Run tests
         run: |
           poetry run pytest
       - name: Build wheels
