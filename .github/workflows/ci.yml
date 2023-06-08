@@ -39,7 +39,7 @@ jobs:
         python-version: 3.7
     - name: Install pre-commit
       run: |
-        pip install pre-commit=2.9.2
+        pip install pre-commit==2.9.2
     - name: Run pre-commit
       run: |
         pre-commit install
