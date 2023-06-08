@@ -13,7 +13,7 @@ cmdict = 'cmdict:run_script.cli'
 cmdicts = 'cmdict:run_script.search'
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.7.0"
 loguru = "^0.5.1"
 click = "^7.1.2"
 colorama = "^0.4.3"
@@ -25,7 +25,10 @@ pyyaml = "^5.3.1"
 optional = true
 
 [tool.poetry.group.pdf.dependencies]
-PyMuPDF = "1.17.3"
+PyMuPDF = "1.22.3"
+
+[tool.poetry.group.dev]
+optional = true
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^2.9.2"
