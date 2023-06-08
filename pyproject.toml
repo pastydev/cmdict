@@ -20,6 +20,7 @@ colorama = ">=0.4.3"
 requests = ">=2.24.0"
 tqdm = ">=4.48.0"
 pyyaml = ">=5.3.1"
+virtualenv = ">=20.10.0"
 
 [tool.poetry.group.pdf]
 optional = true
@@ -31,10 +32,15 @@ PyMuPDF = "1.22.3"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^2.9.2"
 pytest = "^7.0.0"
 pytest-cov = "^2.9.0"
 pytest-xdist = "^1.32.0"
+
+[tool.poetry.group.check]
+optional = true
+
+[tool.poetry.group.check.dependencies]
+pre-commit = "2.21.0"
 
 [tool.black]
 line-length = 79
