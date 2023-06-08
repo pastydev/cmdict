@@ -1,25 +1,25 @@
 [tool.poetry]
 name = "cmdict"
-version = "0.1.3"
+version = "0.1.4"
 description = "A command line dictionary toolset."
 authors = ["zequnyu <zequnyu11@gmail.com>", "edxu96 <edxu96@outlook.com>"]
 license = "GPL-3.0"
 exclude = ["src/cmdict/data/*"]
 readme = "README.md"
-repository = "https://github.com/pasty-dev/cmdict"
+repository = "https://github.com/pastydev/cmdict"
 
 [tool.poetry.scripts]
 cmdict = 'cmdict:run_script.cli'
 cmdicts = 'cmdict:run_script.search'
 
 [tool.poetry.dependencies]
-python = "^3.7.0"
-loguru = "^0.5.1"
-click = "^7.1.2"
-colorama = "^0.4.3"
-requests = "^2.24.0"
-tqdm = "^4.48.0"
-pyyaml = "^5.3.1"
+python = ">=3.7.0"
+loguru = ">=0.5.1"
+click = ">=7.1.2"
+colorama = ">=0.4.3"
+requests = ">=2.24.0"
+tqdm = ">=4.48.0"
+pyyaml = ">=5.3.1"
 
 [tool.poetry.group.pdf]
 optional = true
