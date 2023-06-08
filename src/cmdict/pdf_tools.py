@@ -56,11 +56,11 @@ def extract_words(file_path, color):
     return res
 
 
-def _iterate_all_word_blocks(document: fitz.Document):
+def _iterate_all_word_blocks(document):
     """Iterate word blocks in order from the document.
 
     Args:
-        document: the PDF document.
+        document (fitz.Document): the PDF document.
 
     Yields:
         tuple: word block.
@@ -70,12 +70,12 @@ def _iterate_all_word_blocks(document: fitz.Document):
             yield wb
 
 
-def _iterate_filtered_annotations(document: fitz.Document, color: str):
+def _iterate_filtered_annotations(document, color):
     """Iterate Annotations that are highlighted by target color.
 
     Args:
-        document: the document.
-        color: targeted color.
+        document (fitz.Document): the document.
+        color (str): targeted color.
 
     Yields:
         fitz.Annot: the annotation.
