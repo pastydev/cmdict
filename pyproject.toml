@@ -39,7 +39,7 @@ pytest-xdist = "^1.32.0"
 optional = true
 
 [tool.poetry.group.check.dependencies]
-pre-commit = "2.9.2"
+pre-commit = "2.21.0"
 
 [tool.black]
 line-length = 79
