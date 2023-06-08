@@ -47,6 +47,7 @@ jobs:
   unit-test:
     name: Run unit tests
     runs-on: ${{ matrix.os }}
+    needs: pre-commit
     strategy:
       matrix:
         python-version: [3.7, 3.8]
