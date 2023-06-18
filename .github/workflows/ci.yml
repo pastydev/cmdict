@@ -36,7 +36,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: "3.7"
     - name: Install pre-commit
       run: |
         pip install pre-commit==2.9.2
@@ -49,8 +49,8 @@ jobs:
     needs: pre-commit
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
-        os: [ubuntu-22.04, windows-2022, macos-11]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        os: [ubuntu-22.04, windows-2022, macos-13]
     defaults:
       run:
         shell: bash
@@ -91,7 +91,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: "3.7"
     - uses: snok/install-poetry@v1.3.3
       with:
         virtualenvs-create: true
@@ -109,8 +109,8 @@ jobs:
     needs: build
     strategy:
       matrix:
-        python-version: [3.7, 3.8]
-        os: [ubuntu-22.04, windows-2022, macos-11]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        os: [ubuntu-22.04, windows-2022, macos-13]
     defaults:
       run:
         shell: bash
