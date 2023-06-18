@@ -63,6 +63,9 @@ jobs:
       with:
         virtualenvs-create: true
         virtualenvs-in-project: true
+    - name: Update lock file for dependencies
+      run: |
+        poetry update --with dev,pdf
     - name: Load cached venv
       id: cached-pip-wheels
       uses: actions/cache@v3
