@@ -132,20 +132,3 @@ jobs:
     - name: Run module as executable
       run: |
         cmdict --help
-  publish:
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
-    environment:
-      name: pypi
-      url: https://pypi.org/p/cmdict
-    permissions:
-      id-token: write
-    runs-on: ubuntu-22.04
-    needs: integration-test
-    steps:
-    - name: Download wheel and tar ball built previously
-      uses: actions/download-artifact@master
-      with:
-        name: dist
-        path: ./dist/
-    - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
