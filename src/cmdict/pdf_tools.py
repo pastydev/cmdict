@@ -5,8 +5,10 @@ from cmdict.utils import remove_punctuation
 PDF_FEATURES: bool
 """If the features for PDF are enabled."""
 try:
-    import fitz
-except ImportError:
+    # ``import fitz`` still works, if the directory where it comes from
+    # is empty, so the following command must be used.
+    from fitz import open
+except (ImportError, ModuleNotFoundError):
     PDF_FEATURES = False
 else:
     PDF_FEATURES = True
@@ -37,7 +39,7 @@ def extract_words(file_path, color):
         return []
 
     res = set()
-    document = fitz.open(file_path)
+    document = open(file_path)
     for annot in _iterate_filtered_annotations(document, color):
         # annotation may contain several rectangles in different rows
         word_list = []

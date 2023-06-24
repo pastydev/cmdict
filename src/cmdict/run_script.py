@@ -24,7 +24,31 @@ _db_file = os.path.join(_db_dir, "stardict.db")
 _db_path = pathlib.Path(_db_file)
 
 
-@click.group()
+class ActiveFlagCommand(click.Group):
+    """Add a keyword argument that can optionally disable a command.
+
+    Based on https://stackoverflow.com/a/55379716/10181743.
+    """
+
+    def command(self, *args, active=True, **kwargs):
+        """Add a command to CLI if ``active`` is true.
+
+        Args:
+            *args: other arguments.
+            active: if the command is active. Defaults to True.
+            **kwargs: other keyword arguments.
+
+        Returns:
+            Decorated function by ``click``, if ``active`` is true. The
+            original function, otherwise.
+        """
+        if active:
+            return super(ActiveFlagCommand, self).command(*args, **kwargs)
+        else:
+            return lambda f: f
+
+
+@click.group(cls=ActiveFlagCommand)
 def cli():
     """Command line interface."""
 
@@ -112,7 +136,7 @@ def scan(txt_path):
         _echo_warn_download()
 
 
-@cli.command()
+@cli.command(active=PDF_FEATURES)
 @click.argument("pdf_path", type=click.Path(exists=True))
 @click.option(
     "--color",

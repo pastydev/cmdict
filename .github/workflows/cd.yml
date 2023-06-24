@@ -25,6 +25,7 @@ jobs:
         name: dist
         path: ./dist/*
   pypi:
+    # Only run, if a tag is created on the default branch.
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
     needs: build
     environment:
