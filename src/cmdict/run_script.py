@@ -34,7 +34,13 @@ class ActiveFlagCommand(click.Group):
         """Add a command to CLI if ``active`` is true.
 
         Args:
+            *args: other arguments.
             active: if the command is active. Defaults to True.
+            **kwargs: other keyword arguments.
+
+        Returns:
+            Decorated function by ``click``, if ``active`` is true. The
+            original function, otherwise.
         """
         if active:
             return super(ActiveFlagCommand, self).command(*args, **kwargs)
