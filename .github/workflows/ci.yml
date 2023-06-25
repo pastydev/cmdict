@@ -63,7 +63,7 @@ jobs:
         poetry update --with dev,pdf
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: update Poetry lock with "dev" and "pdf" dependencies
+        commit_message: 'update Poetry lock with "dev" and "pdf" dependencies [skip ci]'
         file_pattern: 'poetry.lock'
   unit-test:
     runs-on: ${{ matrix.os }}

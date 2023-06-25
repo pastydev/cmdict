@@ -66,5 +66,5 @@ jobs:
           poetry version patch
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: increase version by one patch
-          file_pattern: 'pyproject.toml'
+          commit_message: "increase version by one patch [skip ci]"
+          file_pattern: "pyproject.toml"
