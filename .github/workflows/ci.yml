@@ -10,6 +10,7 @@ on:
     - 'codecov.yml'
     - '.python-version'
     - 'poetry.toml'
+    - '.github/workflows/cd.yml'
   pull_request:
     branches: [ master ]
     paths-ignore:
@@ -19,6 +20,7 @@ on:
     - 'codecov.yml'
     - '.python-version'
     - 'poetry.toml'
+    - '.github/workflows/cd.yml'
   workflow_dispatch:
   schedule:
   - cron: '30 5 * * 1'
@@ -51,7 +53,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-python@v2
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: "3.7"
     - uses: snok/install-poetry@v1.3.3
       with:
         virtualenvs-create: true
