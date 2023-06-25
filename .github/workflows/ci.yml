@@ -42,9 +42,30 @@ jobs:
       run: |
         pre-commit install
         pre-commit run --all-files
+  poetry-update:
+    runs-on: ubuntu-22.04
+    needs: pre-commit
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - uses: snok/install-poetry@v1.3.3
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+    - name: Update lock file for dependencies
+      run: |
+        poetry update --with dev,pdf
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: update Poetry lock with "dev" and "pdf" dependencies
+        file_pattern: 'poetry.lock'
   unit-test:
     runs-on: ${{ matrix.os }}
-    needs: pre-commit
+    needs: poetry-update
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
@@ -61,9 +82,6 @@ jobs:
       with:
         virtualenvs-create: true
         virtualenvs-in-project: true
-    - name: Update lock file for dependencies
-      run: |
-        poetry update --with dev,pdf
     - name: Load cached venv
       id: cached-pip-wheels
       uses: actions/cache@v3
