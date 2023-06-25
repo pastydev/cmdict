@@ -3,6 +3,9 @@ name: CD
 on:
   push:
     branches: [ master ]
+    tags:
+    - "**"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -42,3 +45,26 @@ jobs:
           path: ./dist/
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+  version-patch:
+    # Only run, if a tag is created on the default branch.
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
+    needs: pypi
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+      - uses: snok/install-poetry@v1.3.3
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      - name: Increase version by one patch
+        run: |
+          poetry version patch
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "increase version by one patch [skip ci]"
+          file_pattern: "pyproject.toml"
