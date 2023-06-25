@@ -68,3 +68,4 @@ jobs:
         with:
           commit_message: "increase version by one patch [skip ci]"
           file_pattern: "pyproject.toml"
+          branch: "master"

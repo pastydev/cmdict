@@ -1,22 +1,22 @@
 # cmdict &middot; [![pypi](https://badge.fury.io/py/cmdict.svg)](https://pypi.org/project/cmdict/) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zequnyu/cmdict/blob/master/LICENSE) [![CI](https://github.com/pasty-dev/cmdict/actions/workflows/ci.yml/badge.svg)](https://github.com/pasty-dev/cmdict/actions/workflows/ci.yml) [![codecov](https://codecov.io/gh/zequnyu/cmdict/branch/master/graph/badge.svg)](https://codecov.io/gh/zequnyu/cmdict) [![poetry](https://img.shields.io/badge/PyPM-poetry-5975aa)](https://python-poetry.org) [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-`cmdict` is a command-line dictionary toolset.
+`cmdict` not only is an English-to-Chinese dictionary application with a command-line interface, but also provide out-of-box features like extracting highlighted words from a PDF file. It runs on Linux, macOS, and Windows. Additionally, it can be used as a Python package.
 
 ## Installation
 
-Use [`homebrew`](https://brew.sh/):
+The easiest way is to use [Homebrew](https://brew.sh/):
 
 ```sh
-brew install pasty-dev/cmdict/cmdict
+brew install pastydev/cmdict/cmdict
 ```
 
-or [`pip`](https://pypi.org/project/cmdict/):
+To install it from [PyPI](https://pypi.org/project/cmdict/):
 
 ```sh
 pip install cmdict
 ```
 
-## How to Use
+## How to use
 
 ```console
 $ cmdict --help
@@ -78,7 +78,7 @@ apple
     frq: 2695
 ```
 
-## Support
+## Data support
 
 - [`skywind3000/ECDICT`](https://github.com/skywind3000/ECDICT/releases): a free English to Chinese dictionary database (英中双解词典数据库).
 
