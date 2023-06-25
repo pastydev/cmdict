@@ -3,6 +3,9 @@ name: CD
 on:
   push:
     branches: [ master ]
+    tags:
+    - "*"
+  workflow_dispatch:
 
 jobs:
   build:
