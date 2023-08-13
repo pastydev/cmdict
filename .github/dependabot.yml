@@ -1,0 +1,8 @@
+version: 2
+
+updates:
+  # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/about-dependabot-version-updates#supported-repositories-and-ecosystems
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
