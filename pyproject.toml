@@ -32,7 +32,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0.0"
-pytest-cov = "^2.9.0"
+pytest-cov = ">=2.9,<5.0"
 pytest-xdist = ">=1.32,<4.0"
 
 [tool.poetry.group.check]
