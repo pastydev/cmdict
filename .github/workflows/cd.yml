@@ -71,7 +71,7 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
-          branch: increase-version-by-patch
+          branch: increase-version-${{ github.run_number }}
           delete-branch: true
           title: Increase version by one patch
           assignees: edxu96
