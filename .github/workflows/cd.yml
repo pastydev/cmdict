@@ -66,8 +66,15 @@ jobs:
       - name: Increase version by one patch
         run: |
           poetry version patch
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v5
         with:
-          commit_message: "increase version by one patch [skip ci]"
-          file_pattern: "pyproject.toml"
-          branch: "master"
+          commit-message: increase version by one patch [skip ci]
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: increase-version-by-patch
+          delete-branch: true
+          title: Increase version by one patch
+          assignees: edxu96
+          draft: false
