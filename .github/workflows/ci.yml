@@ -46,6 +46,7 @@ jobs:
         pre-commit run --all-files
   unit-test:
     runs-on: ${{ matrix.os }}
+    needs: pre-commit
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
