@@ -51,8 +51,6 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
     needs: pypi
     runs-on: ubuntu-22.04
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-python@v2
