@@ -61,6 +61,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - uses: snok/install-poetry@v1.3.3
       with:
+        version: 1.5.1
         virtualenvs-create: true
         virtualenvs-in-project: true
     - name: Load cached venv
@@ -91,6 +92,7 @@ jobs:
         python-version: "3.7"
     - uses: snok/install-poetry@v1.3.3
       with:
+        version: 1.5.1
         virtualenvs-create: true
         virtualenvs-in-project: true
     - name: Build wheels
