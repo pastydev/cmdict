@@ -67,7 +67,7 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v5
         with:
-          commit-message: increase version by one patch [skip ci]
+          commit-message: increase version by one patch after release [skip ci]
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
