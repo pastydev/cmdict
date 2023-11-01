@@ -42,4 +42,4 @@ jobs:
         imageName: cmdict-devcontainer
         push: never
         runCmd: |
-          pytest tests/ -s
+          poetry run pytest tests/ -s
