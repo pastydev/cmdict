@@ -7,6 +7,10 @@
 
 	"postCreateCommand": "pip install -r requirements.txt && pip install -e .",
 
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+	},
+
 	"customizations": {
 		"vscode": {
 			"extensions": [
