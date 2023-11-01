@@ -42,4 +42,6 @@ jobs:
         imageName: cmdict-devcontainer
         push: never
         runCmd: |
+          poetry run pre-commit install
+          poetry run pre-commit run --all-files
           poetry run pytest tests/ -s
