@@ -11,6 +11,8 @@ on:
     - '.python-version'
     - 'poetry.toml'
     - '.github/workflows/cd.yml'
+    - '.github/workflows/devcontainer.yml'
+    - '.devcontainer/**'
   pull_request:
     branches: [ master ]
     paths-ignore:
@@ -21,6 +23,8 @@ on:
     - '.python-version'
     - 'poetry.toml'
     - '.github/workflows/cd.yml'
+    - '.github/workflows/devcontainer.yml'
+    - '.devcontainer/**'
   workflow_dispatch:
   schedule:
   - cron: '30 5 * * 1'
@@ -39,7 +43,7 @@ jobs:
         python-version: "3.7"
     - name: Install pre-commit
       run: |
-        pip install pre-commit==2.9.2
+        pip install pre-commit==2.21.0
     - name: Run pre-commit
       run: |
         pre-commit install
