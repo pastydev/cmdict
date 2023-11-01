@@ -29,7 +29,6 @@ jobs:
         name: dist
         path: ./dist/*
   pypi:
-    # Only run, if a tag is created on the default branch.
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
     needs: build
     environment:
@@ -47,7 +46,6 @@ jobs:
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
   version-patch:
-    # Only run, if a tag is created on the default branch.
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags') && github.repository == 'pastydev/cmdict'
     needs: pypi
     runs-on: ubuntu-22.04
