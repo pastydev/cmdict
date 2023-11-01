@@ -16,10 +16,6 @@ To install it from [PyPI](https://pypi.org/project/cmdict/):
 pip install cmdict
 ```
 
-## How to contribute
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=master&repo=266903250&machine=largePremiumLinux&location=WestEurope)
-
 ## How to use
 
 ```console
@@ -94,3 +90,7 @@ Downloading the dictionary...
 
 cmdict is ready to use!
 ```
+
+## How to contribute
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=master&repo=266903250&machine=largePremiumLinux&location=WestEurope)
