@@ -3,13 +3,9 @@
 
 	"image": "mcr.microsoft.com/devcontainers/python:3.8",
 
-	"features": {
-		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
-	},
-
 	"remoteUser": "vscode",
 
-	"postCreateCommand": "pip3 install -r requirements",
+	"postCreateCommand": "pip3 install -r requirements.txt",
 
 	"customizations": {
 		"vscode": {
