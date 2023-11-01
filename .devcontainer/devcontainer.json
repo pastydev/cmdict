@@ -5,7 +5,7 @@
 
 	"remoteUser": "vscode",
 
-	"postCreateCommand": "pip3 install -r requirements.txt",
+	"postCreateCommand": "pip install -r requirements.txt && pip install -e .",
 
 	"customizations": {
 		"vscode": {
