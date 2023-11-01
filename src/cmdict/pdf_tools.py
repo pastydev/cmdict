@@ -1,11 +1,18 @@
 """Functions to handle highlights in PDF files."""
-import fitz
-
 from cmdict.ecdict_connector import ECDICTConnector
 from cmdict.utils import remove_punctuation
 
+PDF_FEATURES: bool
+"""If the features for PDF are enabled."""
+try:
+    # ``import fitz`` still works, if the directory where it comes from
+    # is empty, so the following command must be used.
+    from fitz import open
+except (ImportError, ModuleNotFoundError):
+    PDF_FEATURES = False
+else:
+    PDF_FEATURES = True
 
-# Mac OS Preview supported colors
 PREVIEW_COLORS = {
     "yellow": [250, 205, 90],
     "green": [124, 200, 104],
@@ -13,6 +20,7 @@ PREVIEW_COLORS = {
     "pink": [251, 92, 137],
     "purple": [200, 133, 218],
 }
+"""Colors supported by MacOS Preview by default."""
 
 PDF_ANNOT_HIGHLIGHT = 8
 
@@ -31,7 +39,7 @@ def extract_words(file_path, color):
         return []
 
     res = set()
-    document = fitz.open(file_path)
+    document = open(file_path)
     for annot in _iterate_filtered_annotations(document, color):
         # annotation may contain several rectangles in different rows
         word_list = []
@@ -54,13 +62,13 @@ def _iterate_all_word_blocks(document):
     """Iterate word blocks in order from the document.
 
     Args:
-        document (fitz.Document): the document.
+        document (fitz.Document): the PDF document.
 
     Yields:
         tuple: word block.
     """
     for page in document:
-        for wb in sorted(page.getText("words"), key=lambda w: (w[1], w[0])):
+        for wb in sorted(page.get_text("words"), key=lambda w: (w[1], w[0])):
             yield wb
 
 
