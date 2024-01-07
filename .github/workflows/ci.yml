@@ -103,10 +103,10 @@ jobs:
       run: |
         poetry build
     - name: Upload wheel and tar ball
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: "dist"
-        path: "./dist/*"
+        name: dist
+        path: ./dist/*
   integration-test:
     runs-on: ${{ matrix.os }}
     needs: build
@@ -124,8 +124,8 @@ jobs:
     - name: Download wheel and tar ball built previously
       uses: actions/download-artifact@v4
       with:
-        name: "dist"
-        path: "./dist/"
+        name: dist
+        path: ./dist/
     - name: Install wheel
       run: |
         python -m pip install ./dist/cmdict-*py3-none-any.whl
