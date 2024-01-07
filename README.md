@@ -2,7 +2,7 @@
 
 `cmdict` not only is an English-to-Chinese dictionary application with a command-line interface, but also provide out-of-box features like extracting highlighted words from a PDF file. It runs on Linux, macOS, and Windows. Additionally, it can be used as a Python package.
 
-## Installation
+## How to install
 
 The easiest way is to use [Homebrew](https://brew.sh/):
 
@@ -90,3 +90,7 @@ Downloading the dictionary...
 
 cmdict is ready to use!
 ```
+
+## How to contribute
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=master&repo=266903250&machine=largePremiumLinux&location=WestEurope)

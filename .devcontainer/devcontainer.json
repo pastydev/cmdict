@@ -1,0 +1,23 @@
+{
+	"name": "cmdict",
+
+	"image": "mcr.microsoft.com/devcontainers/python:3.8",
+
+	"remoteUser": "vscode",
+
+	"postCreateCommand": "poetry install --with pdf,dev,check",
+
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+	},
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"bungcip.better-toml",
+				"redhat.vscode-yaml",
+				"shd101wyy.markdown-preview-enhanced"
+			]
+		}
+	}
+}
