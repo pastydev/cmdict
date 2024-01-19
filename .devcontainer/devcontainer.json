@@ -5,7 +5,7 @@
 
 	"remoteUser": "vscode",
 
-	"postCreateCommand": "poetry install --with pdf,dev,check",
+	"postCreateCommand": "poetry install --with pdf,dev,check,tui",
 
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
