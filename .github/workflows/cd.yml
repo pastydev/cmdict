@@ -63,7 +63,7 @@ jobs:
         run: |
           poetry version patch
       - name: Create PR
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         with:
           commit-message: increase version by one patch after release [skip ci]
           committer: GitHub <noreply@github.com>
@@ -75,3 +75,4 @@ jobs:
           assignees: edxu96
           draft: false
           add-paths: pyproject.toml
+          base: master
