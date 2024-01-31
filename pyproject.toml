@@ -13,7 +13,7 @@ cmdict = 'cmdict:run_script.cli'
 cmdicts = 'cmdict:run_script.search'
 
 [tool.poetry.dependencies]
-python = ">=3.7.0,<4.0"
+python = ">=3.8.0,<4.0"
 loguru = ">=0.5.1"
 click = ">=7.1.2"
 colorama = ">=0.4.3"
