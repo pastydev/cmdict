@@ -1,0 +1,47 @@
+name: devcontainer
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+    - 'README.md'
+    - 'LICENSE'
+    - '.gitignore'
+    - 'codecov.yml'
+    - '.python-version'
+    - 'poetry.toml'
+    - '.github/workflows/cd.yml'
+    - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+    - 'README.md'
+    - 'LICENSE'
+    - '.gitignore'
+    - 'codecov.yml'
+    - '.python-version'
+    - 'poetry.toml'
+    - '.github/workflows/cd.yml'
+    - '.github/workflows/ci.yml'
+  workflow_dispatch:
+  schedule:
+  - cron: '30 5 * * 1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@master
+    - name: Run unit tests in dev container
+      uses: devcontainers/ci@v0.3
+      with:
+        imageName: cmdict-devcontainer
+        push: never
+        runCmd: |
+          poetry run pre-commit install
+          poetry run pre-commit run --all-files
+          poetry run pytest tests/ -s

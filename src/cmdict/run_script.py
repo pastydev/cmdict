@@ -8,6 +8,7 @@ from colorama import Fore, Style
 from colorama import init as _init_colorama
 import requests
 from tqdm import tqdm
+from trogon import tui
 import yaml
 
 from cmdict.ecdict_connector import ECDICTConnector
@@ -48,6 +49,7 @@ class ActiveFlagCommand(click.Group):
             return lambda f: f
 
 
+@tui()
 @click.group(cls=ActiveFlagCommand)
 def cli():
     """Command line interface."""
