@@ -7,7 +7,7 @@ PDF_FEATURES: bool
 try:
     # ``import fitz`` still works, if the directory where it comes from
     # is empty, so the following command must be used.
-    from fitz import open
+    from fitz import open  # noqa: A004
 except (ImportError, ModuleNotFoundError):
     PDF_FEATURES = False
 else:
