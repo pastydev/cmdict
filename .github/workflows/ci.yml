@@ -53,11 +53,9 @@ jobs:
     needs: pre-commit
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         os: [ubuntu-22.04, windows-2022, macos-13, macos-14]
         exclude:
-        - os: macos-14
-          python-version: "3.7"
         - os: macos-14
           python-version: "3.8"
         - os: macos-14
@@ -100,7 +98,7 @@ jobs:
     - uses: actions/checkout@master
     - uses: actions/setup-python@v2
       with:
-        python-version: "3.7"
+        python-version: "3.8"
     - uses: snok/install-poetry@v1.3.3
       with:
         version: 1.5.1
@@ -119,11 +117,9 @@ jobs:
     needs: build
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         os: [ubuntu-22.04, windows-2022, macos-13, macos-14, macos-14]
         exclude:
-        - os: macos-14
-          python-version: "3.7"
         - os: macos-14
           python-version: "3.8"
         - os: macos-14
