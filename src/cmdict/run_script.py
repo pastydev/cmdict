@@ -117,7 +117,7 @@ def search(words):
     """
     if _valid_db_exists():
         db_engine = ECDICTConnector()
-        for i, word in enumerate(words):
+        for word in words:
             _echo_item(word, db_engine.query(word))
     else:
         _echo_warn_download()
