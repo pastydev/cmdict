@@ -89,8 +89,6 @@ jobs:
         pytest --version
     - name: Run unit tests and Codecov
       run: poetry run pytest -n auto --cov=./ --cov-report=xml
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
   build:
     runs-on: ubuntu-22.04
     needs: unit-test
