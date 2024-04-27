@@ -1,10 +1,8 @@
 """Test functions for extracting highlights in PDF files."""
-from cmdict.pdf_tools import (
-    _check_contain,
-    _fix_hyphen_broken,
-    _get_color_name,
-    extract_words,
-)
+from cmdict.pdf_tools import _check_contain
+from cmdict.pdf_tools import _fix_hyphen_broken
+from cmdict.pdf_tools import _get_color_name
+from cmdict.pdf_tools import extract_words
 
 
 def test_get_color_name_func():

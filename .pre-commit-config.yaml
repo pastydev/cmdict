@@ -14,6 +14,8 @@ repos:
   rev: v3.12.0
   hooks:
   - id: reorder-python-imports
+    args:
+    - --application-directories=src
 - repo: https://github.com/pycqa/flake8
   rev: "4.0.1"
   hooks:
@@ -21,7 +23,6 @@ repos:
       additional_dependencies:
       - 'flake8-builtins'
       - 'flake8-docstrings'
-      - 'flake8-import-order'
       - 'pycodestyle'
       - 'pydocstyle'
 - repo: https://github.com/terrencepreilly/darglint

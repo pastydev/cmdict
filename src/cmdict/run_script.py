@@ -4,15 +4,17 @@ import pathlib
 import zipfile
 
 import click
-from colorama import Fore, Style
-from colorama import init as _init_colorama
 import requests
+import yaml
+from colorama import Fore
+from colorama import init as _init_colorama
+from colorama import Style
 from tqdm import tqdm
 from trogon import tui
-import yaml
 
 from cmdict.ecdict_connector import ECDICTConnector
-from cmdict.pdf_tools import extract_words, PDF_FEATURES
+from cmdict.pdf_tools import extract_words
+from cmdict.pdf_tools import PDF_FEATURES
 from cmdict.txt_tools import scan_words
 
 DB_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-sqlite-28.zip"  # noqa: E501

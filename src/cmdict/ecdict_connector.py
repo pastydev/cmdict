@@ -1,13 +1,15 @@
 """Database Connector."""
-import os
-import pathlib
-import sqlite3
+from pathlib import Path
+from sqlite3 import connect
+from sqlite3 import Error
+from typing import Optional
+from typing import Union
 
 from loguru import logger
 
 from cmdict.history import record
 
-_path = os.path.join(str(pathlib.Path(__file__).parent), "data", "stardict.db")
+_PATH = Path(__file__).parent / "data" / "stardict.db"
 _key_names = (
     "id",
     "word",
@@ -32,20 +34,23 @@ class ECDICTConnector:
 
     """
 
-    def __init__(self, path=_path):
+    def __init__(self, path: Optional[Union[str, Path]] = _PATH):
         """Initialize database Connector.
 
         Args:
-            path (str, optional): Path to the database file.
-                Defaults to ``_path``.
+            path: Path to the database file. Defaults to be ``stardict``.
 
         Raises:
             ValueError: When the database file is missing or invalid.
         """
-        if pathlib.Path(path).is_file() and path.endswith(".db"):
+        _path = Path(path) if isinstance(path, str) else path
+
+        if _path.is_file() and (_path.suffix == ".db"):
             self._conn = ECDICTConnector._init_conn(path)
         else:
-            raise ValueError("Database file is missing or invalid.")
+            raise ValueError(
+                f'Database file at "{_path}" is missing or invalid.'
+            )
 
     @staticmethod
     def _init_conn(path):
@@ -58,8 +63,8 @@ class ECDICTConnector:
             sqlite3.Connection: Connection object to the database.
         """
         try:
-            return sqlite3.connect(path)
-        except sqlite3.Error:
+            return connect(path)
+        except Error:
             logger.exception("SQLite DB connection failed.")
 
     def query(self, word):
@@ -99,5 +104,5 @@ class ECDICTConnector:
                 else None
             )
 
-        except sqlite3.Error:
+        except Error:
             logger.exception("SQLite DB search failed.")

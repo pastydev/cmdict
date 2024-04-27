@@ -3,8 +3,8 @@ import os
 import pathlib
 from typing import Optional
 
-from loguru import logger
 import yaml
+from loguru import logger
 
 _PATH = os.path.join(
     str(pathlib.Path(__file__).parent), "data", ".history.yaml"
