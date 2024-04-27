@@ -144,5 +144,4 @@ cython_debug/
 .idea/
 db/stardict.csv
 **/.DS_Store
-.vscode/
-
+.vscode/settings.json
