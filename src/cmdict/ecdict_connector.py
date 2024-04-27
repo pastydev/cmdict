@@ -1,4 +1,5 @@
 """Database Connector."""
+from os import getenv
 from pathlib import Path
 from sqlite3 import connect
 from sqlite3 import Error
@@ -9,8 +10,13 @@ from loguru import logger
 
 from cmdict.history import record
 
+_HISTORY = True if getenv("CMDICT_HISTORY", None) is None else False
+"""Whether to record queried words in a YAML file.
+
+`True` if no env var is called `CMDICT_HISTORY`.
+"""
 _PATH = Path(__file__).parent / "data" / "stardict.db"
-_key_names = (
+_KEY_NAMES = (
     "id",
     "word",
     "sw",
@@ -95,11 +101,14 @@ class ECDICTConnector:
             query = "select * from stardict where word = ?"
             cursor = self._conn.cursor()
             cursor.execute(query, (word,))
-            record(word)
+
+            if _HISTORY:
+                record(word)
+
             res = cursor.fetchone()
 
             return (
-                dict([(x, y) for x, y in zip(_key_names, res)])
+                dict([(x, y) for x, y in zip(_KEY_NAMES, res)])
                 if res
                 else None
             )
