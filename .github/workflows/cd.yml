@@ -17,7 +17,7 @@ jobs:
         python-version: "3.8"
     - uses: snok/install-poetry@v1.3.3
       with:
-        version: 1.5.1
+        version: "1.5.1"
         virtualenvs-create: true
         virtualenvs-in-project: true
     - name: Build wheels
@@ -56,7 +56,7 @@ jobs:
           python-version: "3.8"
       - uses: snok/install-poetry@v1.3.3
         with:
-          version: 1.5.1
+          version: "1.5.1"
           virtualenvs-create: true
           virtualenvs-in-project: true
       - name: Increase version by one patch

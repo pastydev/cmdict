@@ -2,10 +2,13 @@
 import os
 import pathlib
 
-from click.testing import CliRunner
 import yaml
+from click.testing import CliRunner
 
-from cmdict.run_script import cli, extract, scan, search
+from cmdict.run_script import cli
+from cmdict.run_script import extract
+from cmdict.run_script import scan
+from cmdict.run_script import search
 
 _path_yaml = os.path.join(
     str(pathlib.Path(__file__).parents[2]), "src/cmdict/data/.extraction.yaml"

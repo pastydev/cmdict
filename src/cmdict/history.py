@@ -3,15 +3,15 @@ import os
 import pathlib
 from typing import Optional
 
-from loguru import logger
 import yaml
+from loguru import logger
 
-_path = os.path.join(
+_PATH = os.path.join(
     str(pathlib.Path(__file__).parent), "data", ".history.yaml"
 )
 
 
-def record(word: str, path: Optional[str] = _path):
+def record(word: str, path: Optional[str] = _PATH):
     """Append queried word in a yaml file in lowercase format.
 
     If the path is directed to yaml file, there will be three
